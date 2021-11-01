@@ -12,5 +12,5 @@ format:
 	2)	create a new folder with its purpose and your name, such as "Solution-by-[your-name]"
 	3)	drag the files to your folder and only then push the changes.
 	
-In order to get direct access to the repository post your user name on our discord server
+In order to get direct access to the repository post the git username or email which you wish to invite on our discord server
 on the git-access-request channel.
