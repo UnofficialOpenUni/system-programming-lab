@@ -1,0 +1,8 @@
+
+Your input was: 
+Hello, ABC my name is 1234567 wxyz{|} abc 123 ABCdEFGH Sagi 
+
+
+The shortened string is: 
+Hello, ABC my name is 1-7 w-z{|} abc 123 ABCdE-H Sagi 
+
