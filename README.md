@@ -40,7 +40,7 @@ steps before attempting to upload your code to the repository.
 1.	If this is the first time you are trying to work with this repository
 	use the following commands: 
 	
-	1)	"git add remote origin https://github.com/UnofficialOpenUni/system-programming-lab.git"
+	1)	"git remote add origin https://github.com/UnofficialOpenUni/system-programming-lab.git"
 	
 	2)	"git clone https://github.com/UnofficialOpenUni/system-programming-lab.git"
 
@@ -56,7 +56,7 @@ steps before attempting to upload your code to the repository.
 	3)	"git checkout -b name_of_new_branch" to create a new branch and switch to it.
 	
 	4)	copy the files and changes you wish to make to the correct directory in the
-		repository - so for example if i wish to add a solution for maman12,
+		repository - so for example if I wish to add a solution for maman12,
 		then id open the folder of maman12, create a new folder called
 		"Sagi-Kimhi's-Solution" and copy my files to that folder.
 		
