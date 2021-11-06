@@ -30,19 +30,17 @@ void contract(char s1[], char s2[])
 			for (k=i; isalnum(s1[k+1]) && s1[k]+1==s1[k+1]; ++k)
 					;
 		if (k>i)
-			if ((k-i)>2)
+		{
+			if ((k-i)>1)
 			{
 				s2[j++]=s1[i];
 				s2[j++]=TO;
 				s2[j++]=s1[(i=k)];
+				continue;
 			}
-			else
-			{
-				while (i<k)
-					s2[j++]=s1[i++];
-				s2[j++]=s1[i]; /* i is incremented later in the for loop */
-			}
-		else
+			else /* this else is not necessary but was added for readability */
+				s2[j++]=s1[i++];
+		}
 			s2[j++]=s1[i];
 	}
 	s2[j]='\0';
