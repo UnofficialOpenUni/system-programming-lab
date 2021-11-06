@@ -1,13 +1,10 @@
 ***DISCLAIMER***
 
-DO NOT rely on the test files.
+DO NOT rely on the code or the test files.
 
-i was to lazy too remove them, they are complete dogshit and shall not be used as testers.
+The code for both questions was not fully tested yet and may contain errors.
 
-other than that the code is pretty much complete. 
+I'll update this disclaimer once tests have been ran and fixes has been applied.
 
-I just need to fill in some more comments and maybe optimize it a bit more.
 
-hope this helps to whoever reviews it in the future.
-I will update this file once i finish updating the code.
-02/11/2021
+6/11/2021
