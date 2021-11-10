@@ -10,6 +10,6 @@
 
 /*comment test {}{}{}{}}}}{}}} * /}]]}}}})))))((( */  /*should be balanced*/
 
-/* whole file should be balanced, change 2nd line to make sure its NOT balanced */ 
-/* fix 2nd line and add } at the begining of file to make sure it prints out NOT balanced. */
+/* whole file should be balanced, change 2nd line to make sure its NOT balanced.
+/* fix 2nd line and add } at the begining of file to make sure it prints out NOT balanced.
 /* change { and } to [ and ] or ( and ) to make sure it prints NOT BALANCED */

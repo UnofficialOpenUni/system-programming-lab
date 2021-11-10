@@ -1,0 +1,34 @@
+Hello! Please enter your code below in order to perform a parentheses balance test:
+
+input for line number    1: 
+this line is balanced.
+input for line number    2: {{{{{{{{{[[[[[[]]]]]]}}}}}}}}} /* balanced */
+this line is balanced.
+input for line number    3: {{{{{{{{{{{[[[[[[]]]]]]}}}}}}}}}}} /* balanced */
+this line is balanced.
+input for line number    4: " string test {}{}}}}}}}{{}{}" {}()[] /* balanced */
+this line is balanced.
+input for line number    5: 
+this line is balanced.
+input for line number    6: { 
+this line is *NOT* balanced.
+input for line number    7: /*above is not balanced*/
+this line is balanced.
+input for line number    8: } 
+this line is *NOT* balanced.
+input for line number    9: /*"above is not balanced"*/
+this line is balanced.
+input for line number   10: 
+this line is balanced.
+input for line number   11: /*comment test {}{}{}{}}}}{}}} * /}]]}}}})))))((( */  /*should be balanced*/
+this line is balanced.
+input for line number   12: 
+this line is balanced.
+input for line number   13: /* whole file should be balanced, change 2nd line to make sure its NOT balanced.
+this line is balanced.
+input for line number   14: /* fix 2nd line and add } at the begining of file to make sure it prints out NOT balanced.
+this line is balanced.
+input for line number   15: /* change { and } to [ and ] or ( and ) to make sure it prints NOT BALANCED */
+this line is balanced.
+
+The entire file/input is balanced.

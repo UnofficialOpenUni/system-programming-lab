@@ -18,3 +18,5 @@ int main()
 	printf("\nBlanks: %d\nTabs: %d\nNew Lines: %d\n\n", blanks, tabs, nlines);
 		
 	return 0; 
+	
+/* add } above this comment to make this balanced */
