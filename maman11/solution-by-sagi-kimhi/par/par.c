@@ -14,31 +14,24 @@
 	newline ('\n') character at the end of the line.
 	
 	The description of the algorithm and output is as follows:
+	
 	print input instructions;
 	while (there is another line of input) {
 		save it into an array and print it;
-		if (the line is a special line)
-			print that the line is not valid;
-		else
-			check and print whether or not the line is valid;
+		check and print whether or not the line is balanced
 	}
-	print whether or not the input as a whole is valid;
-	
-	It is worth to mention: 
-	To check the validity of a normal line I have implemented a stack model.
-	The model and its functions are described within the "par.h" header and "pushorpop.c" file.
+	print whether or not the input as a whole is balanced;
 */
 #include "par.h"
 
 int main()
 {
-	char line[MAX_LINE_LENGTH];			/* the array which the next line of input will be saved to */
-	short balanced=1;					/* represents a boolean indicator for the balance of the entire input */
+	char line[MAX_LINE_LENGTH];		/* the array which the next line of input will be saved to */
+	short balanced=1;				/* boolean indicator of the balance of the entire input */
 										
 	printf("Hello! Please enter your code below in order to perform a parentheses balance test:\n");
-	
-	while (getline(line)) {
-		balanced = validate(line);
+	while (getline(line)) {			/* while there is another line of input */
+		balanced = validate(line);	/* validate it and save the returned value into "balanced" */
 	}
 	printf("\n\nThe entire file/input is %s.\n", (balanced) ? "balanced": "NOT balanced");
 	
