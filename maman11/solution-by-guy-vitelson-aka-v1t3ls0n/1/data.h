@@ -1,0 +1,12 @@
+#define MAX_STR_LENGTH 81
+#define MIN_SEQ_LENGTH 3
+#define ASCII_0 48
+#define ASCII_9 57
+#define ASCII_A 65
+#define ASCII_Z 90
+#define ASCII_a 97
+#define ASCII_z 122
+#define NUMBER 1
+#define UPPERCASE_CHAR 2
+#define LOWERCASE_CHAR 3
+#define NOT_DIGIT_NOR_CHARACTER -1
