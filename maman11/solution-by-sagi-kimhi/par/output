@@ -1,0 +1,73 @@
+Hello! Please enter your code below in order to perform a parentheses balance test:
+
+Input for line number    1: {}
+This line is balanced.
+
+Input for line number    2: #include <stdio.h>
+This line is balanced.
+
+Input for line number    3: 
+This line is balanced.
+
+Input for line number    4: int main()
+This line is balanced.
+
+Input for line number    5: {
+This line is *NOT* balanced.
+
+Input for line number    6: 	char c;
+This line is balanced.
+
+Input for line number    7: 	int blanks, tabs, nlines;
+This line is balanced.
+
+Input for line number    8: 	blanks=tabs=nlines=0;
+This line is balanced.
+
+Input for line number    9: 	
+This line is balanced.
+
+Input for line number   10: 	while ((c=getchar())!=EOF)
+This line is balanced.
+
+Input for line number   11: 	{
+This line is *NOT* balanced.
+
+Input for line number   12: 		switch (c)
+This line is balanced.
+
+Input for line number   13: 		{
+This line is *NOT* balanced.
+
+Input for line number   14: 			case ' ': ++blanks; break;
+This line is balanced.
+
+Input for line number   15: 			case '\t': ++tabs; break;
+This line is balanced.
+
+Input for line number   16: 			case '\n': ++nlines; break;
+This line is balanced.
+
+Input for line number   17: 		}
+This line is *NOT* balanced.
+
+Input for line number   18: 	}
+This line is *NOT* balanced.
+
+Input for line number   19: 	printf("\nBlanks: %d\nTabs: %d\nNew Lines: %d\n\n", blanks, tabs, nlines);
+This line is balanced.
+
+Input for line number   20: 		
+This line is balanced.
+
+Input for line number   21: 	return 0; 
+This line is balanced.
+
+Input for line number   22: }
+This line is *NOT* balanced.
+
+Input for line number   23: /* add } above this comment to make this balanced */
+This line is balanced.
+
+
+The entire file/input is balanced.

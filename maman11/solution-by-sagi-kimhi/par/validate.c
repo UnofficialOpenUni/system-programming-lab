@@ -37,13 +37,13 @@ short validate(char line[])
 	if ((special=isSpecialLine(line)) && lastState!=IN_COMM) { /* if its a special line, and not in comment save the returned value into "special" */
 		if (specialBrackCnt!=FAILURE) /* if none of previous tested lines has damaged the balance of the whole input */
 			specialBrackCnt += special;
-		printf("*NOT* balanced.");
+		printf("*NOT* balanced.\n");
 	}
 	else if ((lastState=isBalancedLine(line))>0) 
-			printf("balanced.");
+			printf("balanced.\n");
 	else {							/* if the line is both not special and not balanced */
 		specialBrackCnt=FAILURE; /* then the whole input can no longer be seen as balanced */
-		printf("*NOT* balanced.");
+		printf("*NOT* balanced.\n");
 	}
 	return (!specialBrackCnt); /* if the count is 0 - all open brackets had a matching closing bracket */
 	
