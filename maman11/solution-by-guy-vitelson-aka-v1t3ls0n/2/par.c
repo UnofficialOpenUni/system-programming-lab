@@ -139,7 +139,7 @@ void getTextAndEvalGlobally()
             
             /*This is for the case comment is starting in the end of a line that need to be checked. the line[j] char array is saving only trimmed relevant code 
             that isnot part of string or comment expression, thus, it need to be evaluated on a single line level.*/
-            else if(state==inComment && j>0) /* j  value is equal to the current line length, its like writing strlen(line)m, as j is the counter index of line array */
+            else if(state==inComment && j>0) /* j  value is equal to the current line length, its like writing strlen(line), as j is the counter index of line array. */
                             singleLineResult = evalSingleLine(line);
             
             /*****************************************************************************************************************************
