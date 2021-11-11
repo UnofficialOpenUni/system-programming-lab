@@ -1,18 +1,24 @@
+/*	
+	This file is a partial implementation of a stack model. It contains various standard stack functions such as 
+	push and pop. Yet, the functions are specially specified for the functionality of this specific 
+	program of parentheses/bracket proper nesting validation within a text file/input.
+*/
+
 /* ----------------------------------INCLUDES, PROTOTYPES AND CONSTANTS SECTION---------------------------------- */
 #include "par.h"
 
-/* initstack: A static function to be used by pushorpop() to re/initialize its stack */
-static void initstack(short stack[]);
-/*	push: A static function to be used by pushorpop() to push a character
+/* initStack(): A static function to be used by pushOrPop() to re/initialize its stack */
+static void initStack(short stack[]);
+/*	push(): A static function to be used by pushOrPop() to push a character
 	onto its stack.	*/
 static short push(char c, short stack[], short stack_index);
-/*	pop: A static function to be used by pushorpop() to pop a character
+/*	pop(): A static function to be used by pushOrPop() to pop a character
 	out of the stack. */
 static short pop(char c, short stack[], short stack_index);
 /* -------------------------------END OF INCLUDES, PROTOTYPES AND CONSTANTS SECTION------------------------------- */
 
 /* -----------------------------------------FUNCTION DEFININTIONS SECTION----------------------------------------- */
-/*	pushorpop: 
+/*	pushOrPop(): 
 	keeps 2 static variables of type "short" of a stack and its current index.
 	in order to clear the stack and index, send INIT_PUSHORPOP (-2) as an argument.
 	for any other character argument, the function pushes "opening" brackets into its stack,
@@ -21,11 +27,11 @@ static short pop(char c, short stack[], short stack_index);
 	if the character argument is not a bracket, no push nor pop action will occure.
 	returns: the value of the index of its stack. the value of 0 indicates that the stack is empty.
 	the value FAILURE (-1) is returned upon failure of push or pop actions due to mismatching bracket types. */
-short pushorpop(short c)
+short pushOrPop(short c)
 {
 	static short stack[STACK_SIZE], stack_index; /* A stack to keep track of matching opening/closing bracket types. */
 	if (c==INIT_PUSHORPOP) {		/* reinitializes the stack if the given character equals to INIT_PUSHORPOP (-2) */
-		initstack(stack);			/* which represents a reinitialization request for this function */
+		initStack(stack);			/* which represents a reinitialization request for this function */
 		return (stack_index=0);
 	}
 	else if (stack_index!=FAILURE) {	/* if no previous push or pop attempts resulted in failure since initialization */
@@ -43,8 +49,8 @@ short pushorpop(short c)
 	return stack_index;
 }
 
-/* initstack: A static function to be used by pushorpop() to re/initialize its stack */
-static void initstack(short stack[])
+/* initStack(): A static function to be used by pushOrPop() to re/initialize its stack */
+static void initStack(short stack[])
 {
 	int i;
 	for (i=0; i<STACK_SIZE; ++i)
@@ -52,7 +58,7 @@ static void initstack(short stack[])
 }
 
 /*
-	Attempts to pop a character from the stack with the condition that the character given as argument 
+	pop(): Attempts to pop a character from the stack with the condition that the character given as argument 
 	will be equal to the latest character that was pushed into the stack. 
 	if the attempt fails, the defined value FAILURE is returned. */
 static short pop(char c, short stack[], short stack_index)
@@ -65,7 +71,7 @@ static short pop(char c, short stack[], short stack_index)
 }
 
 /*
-	Attempts to push a character into the stack at a certain index.
+	push(): Attempts to push a character into the stack at a certain index.
 	returns the new index if the character was successfuly pushed, or FAILURE the stack index is already larger than
 	or equal to the max stack size (STACK_SIZE) */
 static short push(char c, short stack[], short stack_index)
