@@ -136,6 +136,23 @@ void getTextAndEvalGlobally()
             /* WE NEED TO EVALUATE BRACKETS ONLY IF THEY APPER NORMALLY, NOT INSIDE A COMMENT OR A STRING*/
             else if (state == isOut)
                 singleLineResult = evalSingleLine(line);
+            
+            /*This is for the case comment is starting in the end of a line that need to be checked. the line[j] char array is saving only trimmed relevant code 
+            that isnot part of string or comment expression, thus, it need to be evaluated on a single line level.*/
+            else if(state==inComment && j>0) /* j  value is equal to the current line length, its like writing strlen(line)m, as j is the counter index of line array */
+                            singleLineResult = evalSingleLine(line);
+            
+            /*****************************************************************************************************************************
+            ~ Never the less, This case check (state==inComment && j>0), is done only  for the sake of the requirements of this mmn11
+             although it violates the actual rules of evaluating brackets in C language!
+           
+            ~ I am writing here something that is outside of the scope of this mmn... but I think is correct...
+            because a string of code as this one: "if(x>y){ /* .... \n" in C is evaluated only when we get outside the multi line comment
+            and if the next curly brackets are closing ones } it will be valid! else it won't. it is just like special lines we have here of single
+            { or } only in the real world of C.
+            *****************************************************************************************************************************/
+    
+            
             /* IF WE ARE IN A STRING OR COMMENT THE LINE MUST BE TRUE */
             else
                 singleLineResult = True;
