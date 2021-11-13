@@ -11,11 +11,14 @@
 	if the line is special it will return INCREASE_CNT for an opening bracket and DECREASE_CNT for a closing bracket. */
 static short isSpecialLine(char line[]);
 /*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are
-	properly nested (line is balanced) or not (line is not balanced).
+	properly nested (line is balanced) or not (line is not balanced). The validation of this method relies 
+	on the usage  of a stack model, and on changes and condition checks done on the pointer argument which
+	points to an int variable which indicates if the character being tested is nested within a string or comment,
+	or is outside of any of those two and therefore can affect the proper nesting of brackets in the line.
 	returns 1 if the string is balanced or 0 if it isn't. */
-static short isBalancedLine(char line[]);
+static short isBalancedLine(char line[], int *state);
 
-enum text_states {OUT, IN_STRING, IN_COMM};	/* defines different states essential for testing the balance of the text */
+enum text_states {OUT, IN_STRING, IN_COMMENT};	/* defines different states essential for testing the balance of the text */
 /* -------------------------------END OF INCLUDES, PROTOTYPES AND CONSTANTS SECTION------------------------------- */
 
 
@@ -28,21 +31,19 @@ enum text_states {OUT, IN_STRING, IN_COMM};	/* defines different states essentia
 	special lines will not make the text unbalanced although they count as unbalanced as an individual line. */
 short validate(char line[])
 {
-	static int lineNum, specialBrackCnt, lastState; /* keeps track of line number and opening/closing brackets in special lines */
+	static int lineNum, specialBrackCnt, state; /* keeps track of line number, opening/closing brackets in special lines and state */
 	short special; 			/* temporary variable to save the returned value from isSpecialLine() */
 	printf("\n%22s%4d: %s\n", "Input for line number ",  ++lineNum, line);
 	printf("This line is ");
-	if (lastState == -IN_COMM)
-		lastState -= lastState;
-	if ((special=isSpecialLine(line)) && lastState!=IN_COMM) { /* if its a special line, and not in comment save the returned value into "special" */
+	if (state==OUT && (special=isSpecialLine(line))) { /* if outside of any comment or string and (the line is a special line - save the returned value) */
 		if (specialBrackCnt!=FAILURE) /* if none of previous tested lines has damaged the balance of the whole input */
 			specialBrackCnt += special;
 		printf("*NOT* balanced.\n");
 	}
-	else if ((lastState=isBalancedLine(line))>0) 
+	else if (isBalancedLine(line, &state)) /* checks if the line is balanced */
 			printf("balanced.\n");
 	else {							/* if the line is both not special and not balanced */
-		specialBrackCnt=FAILURE; /* then the whole input can no longer be seen as balanced */
+		specialBrackCnt=FAILURE; /* then the whole input can no longer be seen as balanced/valid */
 		printf("*NOT* balanced.\n");
 	}
 	return (!specialBrackCnt); /* if the count is 0 - all open brackets had a matching closing bracket */
@@ -50,12 +51,13 @@ short validate(char line[])
 }
 
 /*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are
-	properly nested (line is balanced) or not (line is not balanced).
+	properly nested (line is balanced) or not (line is not balanced). The validation of this method relies 
+	on the usage  of a stack model, and on changes and condition checks done on the pointer argument which
+	points to an int variable which indicates if the character being tested is nested within a string or comment,
+	or is outside of any of those two and therefore can affect the proper nesting of brackets in the line.
 	returns 1 if the string is balanced or 0 if it isn't. */
-static short isBalancedLine(char line[])
+static short isBalancedLine(char line[], int *state)
 {
-	static short state;	/*	keeps track of the different states of this and previous lines - static since comments may
-							persist throughout numerous lines */
 	short stack_index;	/* will save the returned value from pushOrPop() which represents it's current stack index */
 	short i;
 	
@@ -63,12 +65,12 @@ static short isBalancedLine(char line[])
 	for (i=stack_index=0; line[i]!='\0'; ++i) {
 		if (isalnum(line[i]) || isspace(line[i]))	/* alphanumeric and whitespace characters are not relevant to the */
 			continue;								/* balance of the text, therefore move on to the next character */
-		switch (state) {
+		switch (*state) {
 			case OUT:				/* if outside of any string or comment */
 				if (line[i]=='\"')
-					state = IN_STRING;
+					*state = IN_STRING;
 				else if (line[i]=='/' && line[i+1]=='*') {
-					state = IN_COMM;
+					*state = IN_COMMENT;
 					++i;
 				}
 				else	/* if the begining of a string or comment was not encountered */
@@ -77,20 +79,19 @@ static short isBalancedLine(char line[])
 				
 			case IN_STRING:			/* check for a character that breaks out of the string */
 				if (line[i]=='\"')
-					state = OUT;
+					*state = OUT;
 				break;
 				
-			case IN_COMM:			/* check for a set of charactes that breaks out of the comment */
+			case IN_COMMENT:			/* check for a set of charactes that breaks out of the comment */
 				if (line[i]=='*' && line[i+1]=='/') {
-					state = OUT;
+					*state = OUT;
 					++i;
 				}
 				break;
 		}
 	}
-	/* if still in comment - if the stack is empty IN_COMM is returned, else (-)IN_COMM, otherwise
-	returns whether or not the stack is empty */
-	return (state==IN_COMM) ? (!stack_index) ? state: -state: (!stack_index);	
+	/* returns whether or not the stack is empty (if its empty then any brackets existed were properly nested) */
+	return (!stack_index);	
 }
 
 /*	isSpecialLine(): checks if the string given as argument is a "special line".

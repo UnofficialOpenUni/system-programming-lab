@@ -27,7 +27,7 @@ static short pop(char c, short stack[], short stack_index);
 	if the character argument is not a bracket, no push nor pop action will occure.
 	returns: the value of the index of its stack. the value of 0 indicates that the stack is empty.
 	the value FAILURE (-1) is returned upon failure of push or pop actions due to mismatching bracket types. */
-short pushOrPop(short c)
+short pushOrPop(char c)
 {
 	static short stack[STACK_SIZE], stack_index; /* A stack to keep track of matching opening/closing bracket types. */
 	if (c==INIT_PUSHORPOP) {		/* reinitializes the stack if the given character equals to INIT_PUSHORPOP (-2) */

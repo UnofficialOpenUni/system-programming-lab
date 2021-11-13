@@ -10,8 +10,11 @@
 #define DECREASE_CNT -1				/* used by isSpecialLine() to represent a special line with a close bracket */
 
 
-/*	getLine(): save the next line of input onto the array given as argument */
-short getLine(char line[]);
+
+/*	getLine(): saves a line of input into a static character array.
+	returns a pointer to the array on success or a NULL pointer upon reaching EOF if no new characters
+	were added to the array. */
+char *getLine();
 /*	validate(): prints whether or not the parentheses/brackets in the array given as argument are balanced.
 	this method keeps a static counter to keep track of the balance of all the lines that were tested
 	since the begining of the program.
@@ -28,5 +31,5 @@ short validate(char line[]);
 	if the character argument is not a bracket, no push nor pop action will occure.
 	returns: the value of the index of its stack. FAILURE is returned upon
 	failure of push or pop actions due to mismatching bracket types. */
-short pushOrPop(short c);
+short pushOrPop(char c);
 

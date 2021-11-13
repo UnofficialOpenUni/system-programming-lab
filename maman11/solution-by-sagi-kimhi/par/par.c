@@ -20,20 +20,20 @@
 	
 	print input instructions;
 	while (there is another line of input) {
-		save it into an array and print it;
-		check and print whether or not the line is balanced
+		save it and print it;
+		check and print whether or not the line is balanced/valid.
 	}
-	print whether or not the input as a whole is balanced;
+	print whether or not the input as a whole is balanced/valid;
 */
 #include "par.h"
 
 int main()
 {
-	char line[MAX_LINE_LENGTH];		/* the array which the next line of input will be saved to */
+	char *line=NULL;				/* A pointer to the next line of input */
 	short balanced=1;				/* boolean indicator of the balance of the entire input */
 										
 	printf("Hello! Please enter your code below in order to perform a parentheses balance test:\n");
-	while (getLine(line)) {			/* while there is another line of input */
+	while ((line=getLine())!=NULL) {	/* sets a pointer to the next line of input */
 		balanced = validate(line);	/* validate it and save the returned value into "balanced" */
 	}
 	printf("\n\nThe entire file/input is %s.\n", (balanced) ? "balanced": "NOT balanced");
@@ -41,14 +41,17 @@ int main()
 	return balanced;
 }
 
-/*	getLine(): saves a line of input into a character array given as argument.
-	returns 1 on success or 0 upon reaching EOF.
+
+/*	getLine(): saves a line of input into a static character array.
+	returns a pointer to the array on success or a NULL pointer upon reaching EOF if no new characters
+	were added to the array.
 */
-short getLine(char line[])
+char *getLine()
 {
+	static char line[MAX_LINE_LENGTH];		/* the array which the next line of input will be saved to */
 	if (fgets(line, MAX_LINE_LENGTH, stdin)!=NULL) {
 		line[strcspn(line, "\n")] = '\0';	/* remove any newline characters from the array */
-		return 1;
+		return line;
 	}
-	return 0;
+	return NULL;
 }
