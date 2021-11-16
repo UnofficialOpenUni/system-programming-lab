@@ -6,151 +6,176 @@ The global result takes count of special lines with correct open or closed curly
  *** Good Luck :) ***
 
 
-The Line You Entered is: /*
+The Line You Entered is:
+/*
+This kelet text needs to be valid globally!
+*/
 
 *** Valid :) ***
 
-
-The Line You Entered is: This kelet text needs to be valid globally!
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: */
-
-*** Valid :) ***
-
-
-The Line You Entered is: /*
+The Line You Entered is:
+/*
+{
+*/
 
 *** Valid :) ***
 
-
-The Line You Entered is: {
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: */
-
-*** Valid :) ***
-
-
-The Line You Entered is: {
+The Line You Entered is:
+{
 
 *** Not Valid! :( ***
 
-
-The Line You Entered is: {
-
-*** Not Valid! :( ***
+##################################################  
 
 
-The Line You Entered is: if(x>y){/*gdsghsdf*/}
-
-*** Valid :) ***
-
-
-The Line You Entered is: [()]
-
-*** Valid :) ***
-
-
-The Line You Entered is: {{{}}}
-
-*** Valid :) ***
-
-
-The Line You Entered is: ([])
-
-*** Valid :) ***
-
-
-The Line You Entered is: /*]]]]]
-
-*** Valid :) ***
-
-
-The Line You Entered is: [[[[]]]]
-
-*** Valid :) ***
-
-
-The Line You Entered is: */"fsagsdg]]]"
-
-*** Valid :) ***
-
-
-The Line You Entered is: {[()]}
-
-*** Valid :) ***
-
-
-The Line You Entered is: /*}
-
-*** Valid :) ***
-
-
-The Line You Entered is: Untill now all kelet need to be valid,
-
-*** Valid :) ***
-
-
-The Line You Entered is: nuxt lines must not be valid individually
-
-*** Valid :) ***
-
-
-The Line You Entered is: */
-
-*** Valid :) ***
-
-
-The Line You Entered is: {
+The Line You Entered is:
+{
 
 *** Not Valid! :( ***
 
-
-The Line You Entered is: }
-
-*** Not Valid! :( ***
+##################################################  
 
 
-The Line You Entered is: {
-
-*** Not Valid! :( ***
-
-
-The Line You Entered is: }
-
-*** Not Valid! :( ***
-
-
-The Line You Entered is: }
-
-*** Not Valid! :( ***
-
-
-The Line You Entered is: }
-
-*** Not Valid! :( ***
-
-
-The Line You Entered is: }
-
-*** Not Valid! :( ***
-
-
-The Line You Entered is: 
+The Line You Entered is:
+if(x>y){/*gdsghsdf*/}
 
 *** Valid :) ***
 
+##################################################  
 
-The Line You Entered is: 
+
+The Line You Entered is:
+[()]
 
 *** Valid :) ***
 
+##################################################  
 
-The Line You Entered is: 
+
+The Line You Entered is:
+{{{}}}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+([])
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*]]]]]
+[[[[]]]]
+*/"fsagsdg]]]"
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{[()]}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*}
+Untill now all kelet need to be valid,
+nuxt lines must not be valid individually
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+
 *** Text is Not Globally Valid! ): ***
 

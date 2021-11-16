@@ -6,78 +6,88 @@ The global result takes count of special lines with correct open or closed curly
  *** Good Luck :) ***
 
 
-The Line You Entered is: ()
+The Line You Entered is:
+()
 
 *** Valid :) ***
 
-
-The Line You Entered is: [](){}[({})]{[()]}
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: [()]
+The Line You Entered is:
+[](){}[({})]{[()]}
 
 *** Valid :) ***
 
-
-The Line You Entered is: {{{}}}
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: ([])
+The Line You Entered is:
+[()]
 
 *** Valid :) ***
 
-
-The Line You Entered is: /*]]]]]
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: [[[[]]]]
+The Line You Entered is:
+{{{}}}
 
 *** Valid :) ***
 
-
-The Line You Entered is: */"fsagsdg]]]"
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: "fsagsdg]]]"
+The Line You Entered is:
+([])
 
 *** Valid :) ***
 
-
-The Line You Entered is: if(x>y){/*gdsghsdf*/}
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: /*
-
-*** Valid :) ***
-
-
-The Line You Entered is: []]]]]))))
+The Line You Entered is:
+/*]]]]]
+[[[[]]]]
+*/"fsagsdg]]]"
 
 *** Valid :) ***
 
-
-The Line You Entered is: "]]]]]"
-
-*** Valid :) ***
+##################################################  
 
 
-The Line You Entered is: */
+The Line You Entered is:
+"fsagsdg]]]"
 
 *** Valid :) ***
 
+##################################################  
 
-The Line You Entered is: {[()]}
+
+The Line You Entered is:
+if(x>y){/*gdsghsdf*/}
+
 *** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*
+[]]]]]))))
+"]]]]]"
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{[()]}
+*** Valid :) ***
+
+##################################################  
 
 
 

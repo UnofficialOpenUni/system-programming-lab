@@ -1,3 +1,8 @@
+/*
+ add documentation to code
+ check that in eval globally updating last line result of last result works!
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -18,15 +23,13 @@ typedef enum
     isOut = 3,
     inComment = 4,
     inString = 5,
-    newLine = 6,
-    preFalse = -2
-
 } State;
 
 typedef enum
 {
     False,
     True,
+
 } Bool;
 
 Bool isOpeningBracket(int asciValue);
@@ -34,11 +37,10 @@ Bool isClosingBracket(int asciValue);
 Bool areBracketsOfSameTypeButInverse(int o, int c);
 Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LINE_LENGTH / 2], int length);
 Bool evalSingleLine(char line[MAX_LINE_LENGTH]);
-State handleState(State prevState, int current, int prev);
 
 void getTextAndEvalGlobally();
 void printCurrentLineResult(Bool result);
-void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
+void printGlobalResult(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
 
 int main()
 {
@@ -50,111 +52,149 @@ void getTextAndEvalGlobally()
 {
     Bool globalResult = True;
     Bool singleLineResult = True;
-    State currentState = isOut;
-    int preDetermentResult = -1, c, j, lastCharBeforeEOF, prevChar, lonelyOpenBracetsCount, lonelyCloseBracetsCount;
-    c = j = lastCharBeforeEOF = prevChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
+    State state = isOut;
+
+    int preDetermentResult = -1, c, j, lastCharBeforeEOF, prevImportantChar, lonelyOpenBracetsCount, lonelyCloseBracetsCount;
+    c = j = lastCharBeforeEOF = prevImportantChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
     char line[MAX_LINE_LENGTH] = {0};
-    printf("The Line You Entered is:\n");
+    printf("The Line You Entered is: ");
     while ((c = getchar()) != EOF)
     {
         lastCharBeforeEOF = c;
         putchar(c);
+        /* 
+        IF TABS/ENTERS AND ALL KIND OF WHITE SPACE THAT ARE NOT A NEW LINE
+         COUNTS FOR ME WHITE SPACE AND HANDLED BY THE FIRST CASE OF THE SWITCH CASE
+         */
         if (isspace(c) != 0 && c != ASCII_NEW_LINE)
             c = ASCII_EMPTY_SPACE;
-        currentState = handleState(currentState, c, prevChar);
 
-        switch (currentState)
+        switch (c)
         {
-        case preFalse:
+        case ASCII_EMPTY_SPACE:
         {
-            preDetermentResult = False;
+            prevImportantChar = c;
             break;
         }
-
-        case inComment:
+        case ASCII_DOUBLE_QUOTES:
         {
-            preDetermentResult = j > 0 ? -1 : True;
-            break;
-        }
-        case inString:
-        {
-            preDetermentResult = j > 0 ? -1 : True;
-            break;
-        }
-
-        case isOut:
-        {
-            if (c != ASCII_EMPTY_SPACE)
-            {
-                line[j] = c;
-                j++;
-            }
-
-            break;
-        }
-
-        case newLine:
-        {
-            if (preDetermentResult != -1)
-            {
-
-                singleLineResult = preDetermentResult;
-                preDetermentResult = -1;
-            }
+            if (state == inComment)
+                break;
             else
             {
+                if (state == inString)
+                    state = isOut;
+                else if (state == isOut)
+                    state = inString;
+                break;
+            }
+        }
 
-                if (j == 0)
-                    singleLineResult = True;
-                else if (j > 0)
+        case ASCII_FORWARD_SLASH:
+        {
+            if (state == inString)
+                break;
+            else
+            {
+                if (prevImportantChar == ASCII_ASTERISK)
                 {
-                    if (j > 1)
-                        singleLineResult = evalSingleLine(line);
-                    else if (j == 1)
+                    if (state == inComment)
+                        state = isOut;
+                    else
                     {
-                        singleLineResult = False;
+                        /* SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
+                        THAT DOES NOT EXIST,IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENTCANNOT BE VALID */
+                        state = isOut;
+                        preDetermentResult = False;
+                        break;
+                    }
+                }
+                else
+                    prevImportantChar = ASCII_FORWARD_SLASH;
 
-                        if (globalResult == True)
-                        {
-                            /*
+                break;
+            }
+        }
+
+        case ASCII_ASTERISK:
+        {
+            if (state == inString)
+                break;
+            else
+            {
+                if (state == isOut && prevImportantChar == ASCII_FORWARD_SLASH)
+                    state = inComment;
+                else
+                    prevImportantChar = ASCII_ASTERISK;
+
+                break;
+            }
+        }
+
+        /* THIS CASE IS THE ONE THAT FORCES US TO EVALUATE THE CURRENT LINE: */
+        case ASCII_NEW_LINE:
+        {
+            if (preDetermentResult != -1)
+                singleLineResult = preDetermentResult;
+            /* WE NEED TO EVALUATE BRACKETS ONLY IF THEY APPER NORMALLY, NOT INSIDE A COMMENT OR A STRING*/
+            if (j == 0)
+                singleLineResult = True;
+            else if (j > 0)
+            {
+                if (j > 1)
+                    singleLineResult = evalSingleLine(line);
+                else if (j == 1)
+                {
+                    singleLineResult = False;
+
+                    if (globalResult == True)
+                    {
+                        /*
             IF GLOBAL RESULT HAVE NOT BEEN SET TO FALSE YET BY FIRST CASE OF LINE BEING NOT VALID AND NOT SPECIAL ONE
             AT THE SAME TIME - THEN WE ARE CHECKING IF THIS NON VALID LINE IS SPECIAL ONE,
              IF THIS LINE IS SPECIAL IN A VALID WAY, WE COUNT AND REMEMBER THIS, THE FIRST TIME CURRENT LINE IS NOT SPECIAL
              AND NOT VALID OR SPECIAL LINES BALANCE BREAKS, WE SET GLOBAL RESULT TO FALSE AND NEVER ENTER THIS IF BLOCK AGAIN
             */
-                            if (line[0] == ASCII_OPENING_CURLY_BRACES || line[0] == ASCII_CLOSING_CURLY_BRACES)
-                            {
-                                if (line[0] == ASCII_OPENING_CURLY_BRACES)
-                                    lonelyOpenBracetsCount++;
-                                else
-                                    lonelyCloseBracetsCount++;
-
-                                if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
-                                    globalResult = False;
-                            }
+                        if (line[0] == ASCII_OPENING_CURLY_BRACES || line[0] == ASCII_CLOSING_CURLY_BRACES)
+                        {
+                            if (line[0] == ASCII_OPENING_CURLY_BRACES)
+                                lonelyOpenBracetsCount++;
                             else
+                                lonelyCloseBracetsCount++;
+
+                            if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
                                 globalResult = False;
                         }
+                        else
+                            globalResult = False;
                     }
                 }
             }
 
             printCurrentLineResult(singleLineResult);
+            prevImportantChar = 0;
             memset(line, 0, j);
-            prevChar = 0;
-            currentState = isOut;
-            singleLineResult = True;
             j = 0;
-            printf("The Line You Entered is:\n");
+            preDetermentResult = -1;
+            if (state == inString)
+                state = isOut;
+            printf("The Line You Entered is: ");
+        }
+        default:
+        {
+            if (isspace(c) == 0 && state == isOut)
+            {
+                line[j] = c;
+                j++;
+            }
         }
         }
-        prevChar = c;
     }
 
-    evalTextGlobally(globalResult, line, lastCharBeforeEOF, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
+    printGlobalResult(globalResult, line, lastCharBeforeEOF, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
 }
 
-void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
+void printGlobalResult(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
 {
     Bool lastSingleLineResult = True;
 
@@ -164,7 +204,11 @@ void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastC
             lastSingleLineResult = evalSingleLine(lastLine);
         else if (strlen(lastLine) == 1)
             lastSingleLineResult = False;
+        
         printCurrentLineResult(lastSingleLineResult);
+              /*
+        lastResult =lastSingleLineResult;
+        */  
     }
 
     if (lastResult && lastChar != ASCII_NEW_LINE)
@@ -187,81 +231,9 @@ void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastC
 void printCurrentLineResult(Bool result)
 {
     if (result == True)
-        printf("\n*** Valid :) ***\n");
+        printf("\n*** Valid :) ***\n\n\n");
     else
-        printf("\n*** Not Valid! :( ***\n");
-
-    printf("\n##################################################  \n\n\n");
-}
-
-State handleState(State prevState, int current, int prev)
-{
-    State state = prevState;
-
-    switch (current)
-    {
-    case ASCII_DOUBLE_QUOTES:
-    {
-        if (state == inComment)
-            break;
-        else
-        {
-            if (state == inString)
-                state = isOut;
-            else if (state == isOut)
-                state = inString;
-            break;
-        }
-    }
-
-    case ASCII_FORWARD_SLASH:
-    {
-        if (state == inString)
-            break;
-        else
-        {
-            if (prev == ASCII_ASTERISK)
-            {
-                if (state == inComment)
-                    state = isOut;
-                else
-                {
-                    /* SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
-                        THAT DOES NOT EXIST,IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENTCANNOT BE VALID */
-                    state = preFalse;
-                    break;
-                }
-            }
-
-            break;
-        }
-    }
-
-    case ASCII_ASTERISK:
-    {
-        if (state == inString)
-            break;
-        else
-        {
-            if (state == isOut && prev == ASCII_FORWARD_SLASH)
-                state = inComment;
-
-            break;
-        }
-    }
-
-    case ASCII_NEW_LINE:
-    {
-
-        state = state != inComment ? newLine : inComment;
-        break;
-    }
-
-    default:
-        break;
-    }
-
-    return state;
+        printf("\n*** Not Valid! :( ***\n\n\n");
 }
 
 Bool evalSingleLine(char line[MAX_LINE_LENGTH])
