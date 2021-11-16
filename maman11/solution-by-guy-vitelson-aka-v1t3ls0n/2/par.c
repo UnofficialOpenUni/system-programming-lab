@@ -1,7 +1,6 @@
 /*
-1 - fix pelet to show also every line from input
-2 - make 2 kelet files - 1 for good result and 1 for bad result
-3 - add documentation to code
+ add documentation to code
+ check that in eval globally updating last line result of last result works!
 */
 
 #include <stdio.h>
@@ -204,10 +203,12 @@ void printGlobalResult(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int last
         if (strlen(lastLine) > 1)
             lastSingleLineResult = evalSingleLine(lastLine);
         else if (strlen(lastLine) == 1)
-        {
             lastSingleLineResult = False;
-        }
+        
         printCurrentLineResult(lastSingleLineResult);
+              /*
+        lastResult =lastSingleLineResult;
+        */  
     }
 
     if (lastResult && lastChar != ASCII_NEW_LINE)
