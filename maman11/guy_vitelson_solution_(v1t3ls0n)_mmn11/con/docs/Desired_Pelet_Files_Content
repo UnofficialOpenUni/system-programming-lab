@@ -1,0 +1,36 @@
+
+/*
+Desired Output Examples:
+
+Example 1:
+Input:  abcdef#LLMN 67890123#HIJKMNOpqrstu(?@AB,1124-8)
+Output: a-f#LL-N 6-90-3#H-KM-Op-u(?@AB,1124-8)
+
+Example 2:
+Input:  ABC
+Output: A-C
+
+Example 3:
+Input:  AB
+Output: AB
+
+Example 4:
+Input:  abcdefg
+Output  a-g
+
+Example 5:
+Input:  0123456
+Output  0-6
+
+Example 6:
+Input:  012
+Output  0-2
+
+Example 7:
+Input:  12
+Output  12
+
+Example 8:
+Input: 123456abcdef$$$$$$$%%%%%%%%
+Output: 1-6a-f$$$$$$$%%%%%%%%
+ */

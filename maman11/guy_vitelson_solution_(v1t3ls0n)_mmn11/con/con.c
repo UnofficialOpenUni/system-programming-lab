@@ -26,13 +26,15 @@ int main()
 {
     char s1[MAX_STR_LENGTH], s2[MAX_STR_LENGTH];
     int length;
-    printf("\nThis program purpose is to shorten any string of text you want to,\nas long as it's max character size is not over 80 characters...\n\n");
-    printf("Please enter string of text:\n\n");
+    printf("\n############################################################################\n");
+    printf("\nThis program purpose is to shorten any string of text you want to\nAs long as it's max character size is not over 80 characters.\n");
+    printf("\n##############################################################################");
+    printf("\n\n*** Please Insert Text: ***\n\n");
     fgets(s1, MAX_STR_LENGTH, stdin);
     length = strlen(s1);
-    printf("You entered:\n%s\n\n", s1);
+    printf("\nThe Text You Have Inserted Is:\n%s", s1);
     contract(s1, s2, length);
-    printf("The Resulted shorter text we made for you is:\n%s\n\nThank you and goodbye.\n\n", s2);
+    printf("\nAnd Our Result Is:\n%s\n*** The Result Is The Shorter Version Of The Text You Have Enterd. ***\n\nThank You And Goodbye :)\n\n\n", s2);
 
     return 0;
 }
@@ -126,35 +128,3 @@ void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
         }
     }
 }
-
-/*
-Desired Output Examples:
-
-Example 1:
-Input:  abcdef#LLMN 67890123#HIJKMNOpqrstu(?@AB,1124-8)
-Output: a-f#LL-N 6-90-3#H-KM-Op-u(?@AB,1124-8)
-
-Example 2:
-Input:  ABC
-Output: A-C
-
-Example 3:
-Input:  AB
-Output: AB
-
-Example 4:
-Input:  abcdefg
-Output  a-g
-
-Example 5:
-Input:  0123456
-Output  0-6
-
-Example 6:
-Input:  012
-Output  0-2
-
-Example 7:
-Input:  12
-Output  12
- */
