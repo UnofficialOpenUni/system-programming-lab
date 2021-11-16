@@ -32,9 +32,9 @@ int main()
     printf("\n\n*** Please Insert Text: ***\n\n");
     fgets(s1, MAX_STR_LENGTH, stdin);
     length = strlen(s1);
-    printf("\nThe Text You Have Inserted Is:\n%s", s1);
+    printf("\nThe Text You Have Inserted Is:\n\n%s\n\n", s1);
     contract(s1, s2, length);
-    printf("\nAnd Our Result Is:\n%s\n*** The Result Is The Shorter Version Of The Text You Have Enterd. ***\n\nThank You And Goodbye :)\n\n\n", s2);
+    printf("\nAnd Our Result Is:\n\n%s\n\n*** The Result Is The Shorter Version Of The Text You Have Enterd. ***\n\nThank You And Goodbye :)\n\n\n", s2);
 
     return 0;
 }
