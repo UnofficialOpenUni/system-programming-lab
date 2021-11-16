@@ -1,3 +1,8 @@
+/*
+1 - fix pelet to show also every line from input
+2 - make 2 kelet files - 1 for good result and 1 for bad result
+3 - add documentation to code
+*/
 
 #include <stdio.h>
 #include <string.h>
@@ -36,7 +41,7 @@ Bool evalSingleLine(char line[MAX_LINE_LENGTH]);
 
 void getTextAndEvalGlobally();
 void printCurrentLineResult(Bool result);
-void printGlobalResult(Bool lastResult, int lastChar, int closedCount, int openCount);
+void printGlobalResult(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
 
 int main()
 {
@@ -53,18 +58,17 @@ void getTextAndEvalGlobally()
     int preDetermentResult = -1, c, j, lastCharBeforeEOF, prevImportantChar, lonelyOpenBracetsCount, lonelyCloseBracetsCount;
     c = j = lastCharBeforeEOF = prevImportantChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
     char line[MAX_LINE_LENGTH] = {0};
-
+    printf("The Line You Entered is: ");
     while ((c = getchar()) != EOF)
     {
-
+        lastCharBeforeEOF = c;
+        putchar(c);
         /* 
         IF TABS/ENTERS AND ALL KIND OF WHITE SPACE THAT ARE NOT A NEW LINE
          COUNTS FOR ME WHITE SPACE AND HANDLED BY THE FIRST CASE OF THE SWITCH CASE
          */
-        if (isspace(c) && c != ASCII_NEW_LINE)
+        if (isspace(c) != 0 && c != ASCII_NEW_LINE)
             c = ASCII_EMPTY_SPACE;
-
-        lastCharBeforeEOF = c;
 
         switch (c)
         {
@@ -134,48 +138,52 @@ void getTextAndEvalGlobally()
             if (preDetermentResult != -1)
                 singleLineResult = preDetermentResult;
             /* WE NEED TO EVALUATE BRACKETS ONLY IF THEY APPER NORMALLY, NOT INSIDE A COMMENT OR A STRING*/
-            else if (state == isOut)
-                singleLineResult = evalSingleLine(line);
-            /* IF WE ARE IN A STRING OR COMMENT THE LINE MUST BE TRUE */
-            else
+            if (j == 0)
                 singleLineResult = True;
+            else if (j > 0)
+            {
+                if (j > 1)
+                    singleLineResult = evalSingleLine(line);
+                else if (j == 1)
+                {
+                    singleLineResult = False;
 
-            /*
+                    if (globalResult == True)
+                    {
+                        /*
             IF GLOBAL RESULT HAVE NOT BEEN SET TO FALSE YET BY FIRST CASE OF LINE BEING NOT VALID AND NOT SPECIAL ONE
             AT THE SAME TIME - THEN WE ARE CHECKING IF THIS NON VALID LINE IS SPECIAL ONE,
              IF THIS LINE IS SPECIAL IN A VALID WAY, WE COUNT AND REMEMBER THIS, THE FIRST TIME CURRENT LINE IS NOT SPECIAL
              AND NOT VALID OR SPECIAL LINES BALANCE BREAKS, WE SET GLOBAL RESULT TO FALSE AND NEVER ENTER THIS IF BLOCK AGAIN
             */
-            if (globalResult == True && singleLineResult == False)
-            {
-                if (strlen(line) == 1 && (line[0] == ASCII_OPENING_CURLY_BRACES || line[0] == ASCII_CLOSING_CURLY_BRACES))
-                {
-                    if (line[0] == ASCII_OPENING_CURLY_BRACES)
-                        lonelyOpenBracetsCount++;
-                    else
-                        lonelyCloseBracetsCount++;
+                        if (line[0] == ASCII_OPENING_CURLY_BRACES || line[0] == ASCII_CLOSING_CURLY_BRACES)
+                        {
+                            if (line[0] == ASCII_OPENING_CURLY_BRACES)
+                                lonelyOpenBracetsCount++;
+                            else
+                                lonelyCloseBracetsCount++;
 
-                    if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
-                        globalResult = False;
-                }
-                else
-                {
-                    globalResult = False;
+                            if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
+                                globalResult = False;
+                        }
+                        else
+                            globalResult = False;
+                    }
                 }
             }
 
             printCurrentLineResult(singleLineResult);
-
             prevImportantChar = 0;
             memset(line, 0, j);
             j = 0;
             preDetermentResult = -1;
             if (state == inString)
                 state = isOut;
+            printf("The Line You Entered is: ");
         }
         default:
         {
-            if (!isspace(c) && state == isOut)
+            if (isspace(c) == 0 && state == isOut)
             {
                 line[j] = c;
                 j++;
@@ -184,11 +192,23 @@ void getTextAndEvalGlobally()
         }
     }
 
-    printGlobalResult(globalResult, lastCharBeforeEOF, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
+    printGlobalResult(globalResult, line, lastCharBeforeEOF, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
 }
 
-void printGlobalResult(Bool lastResult, int lastChar, int closedCount, int openCount)
+void printGlobalResult(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
 {
+    Bool lastSingleLineResult = True;
+
+    if (lastChar != ASCII_NEW_LINE)
+    {
+        if (strlen(lastLine) > 1)
+            lastSingleLineResult = evalSingleLine(lastLine);
+        else if (strlen(lastLine) == 1)
+        {
+            lastSingleLineResult = False;
+        }
+        printCurrentLineResult(lastSingleLineResult);
+    }
 
     if (lastResult && lastChar != ASCII_NEW_LINE)
     {
@@ -210,9 +230,9 @@ void printGlobalResult(Bool lastResult, int lastChar, int closedCount, int openC
 void printCurrentLineResult(Bool result)
 {
     if (result == True)
-        printf("\n*** Valid :) ***\n");
+        printf("\n*** Valid :) ***\n\n\n");
     else
-        printf("\n*** Not Valid! :( ***\n");
+        printf("\n*** Not Valid! :( ***\n\n\n");
 }
 
 Bool evalSingleLine(char line[MAX_LINE_LENGTH])
@@ -220,47 +240,48 @@ Bool evalSingleLine(char line[MAX_LINE_LENGTH])
     int i, j = 0, k = 0, current = 0;
     Bool result = True;
     char open[MAX_LINE_LENGTH / 2] = {0}, closed[MAX_LINE_LENGTH / 2] = {0};
-
     for (i = 0; line[i]; i++)
     {
-        if (result == False)
-            return False;
         current = (int)line[i];
-
         if (isOpeningBracket(current))
         {
-            if (strlen(closed) > 0)
-                result = False;
-            else
-            {
-                open[j] = current;
-                j++;
-            }
+            open[j] = current;
+            j++;
         }
         else if (isClosingBracket(current))
         {
             closed[k] = current;
             k++;
-            if (strlen(open) == 0)
-                result = False;
-            else if (strlen(open) == 1 && strlen(closed) == 1)
+            /* 
+                if k > j return false because bracket sequence cannot hold more closing
+                brackets then opening brackets!
+            */
+            if (k > j)
+                return False;
+
+            /* is length are equal its time to evaluate brackets sequence */
+            else if (j == k)
             {
-                result = areBracketsOfSameTypeButInverse((int)open[0], (int)closed[0]);
-                j = k = 0;
-                closed[0] = open[0] = '\0';
+                if (j == 1)
+                    result = areBracketsOfSameTypeButInverse(open[0], closed[0]);
+                else if (j > 1)
+                    result = evalBracketSequence(open, closed, k);
+
+                if (result == False)
+                    return False;
+                else
+                {
+                    memset(open, 0, j);
+                    memset(closed, 0, k);
+                    j = k = 0;
+                }
             }
         }
     }
-
     if (j != k)
         return False;
-
-    else if (j == k && j > 0)
-        return evalBracketSequence(open, closed, strlen(closed));
-    else
-        return result;
+    return result;
 }
-
 Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LINE_LENGTH / 2], int length)
 {
     int i = 0, j = length - 1, result = True;
