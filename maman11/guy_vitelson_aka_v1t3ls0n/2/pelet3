@@ -1,0 +1,181 @@
+~ In this program each line of your code will be evaluated seperately,
+and result will show up immediately as you press enter to start a new line.
+At the end of you input you will see the evaluation result for the whole text you've entered.
+The global result takes count of special lines with correct open or closed curly braces.~
+
+ *** Good Luck :) ***
+
+
+The Line You Entered is:
+/*
+This kelet text needs to be valid globally!
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*
+{
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+if(x>y){/*gdsghsdf*/}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+[()]
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{{{}}}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+([])
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*]]]]]
+[[[[]]]]
+*/"fsagsdg]]]"
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{[()]}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*}
+Untill now all kelet need to be valid,
+nuxt lines must not be valid individually
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+
+*** Text is Not Globally Valid! ): ***
+
