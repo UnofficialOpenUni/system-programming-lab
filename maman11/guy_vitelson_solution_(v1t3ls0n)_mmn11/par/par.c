@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#define MAX_LINE_LENGTH 100
+#define MAX_LINE_LENGTH 101
 #define ASCII_NEW_LINE 10
 #define ASCII_EMPTY_SPACE 32
 #define ASCII_DOUBLE_QUOTES 34
