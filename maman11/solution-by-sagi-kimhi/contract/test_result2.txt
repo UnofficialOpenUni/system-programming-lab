@@ -1,0 +1,20 @@
+
+********************** Hello And Welcome! **********************
+This program is meant to help you shorten consecutive series
+of 3 or more alphanumeric characters within a line of string.
+Please make sure that your line of input is no longer than 80 characters.
+If it is longer, then only the first 80 will be scanned and shortened.
+
+as an example, the input abcdef12345 will be shortened to a-f1-5 
+
+In order to begin, please provide a line of input...
+*******************************************************************
+
+
+Your input was: 
+”abcdef#LLMN 67890123#HIJKMNOpqrstu(?@AB,1124-8)”
+
+
+The shortened string is: 
+”a-f#LL-N 6-90-3#H-KM-Op-u(?@AB,1124-8)”
+

@@ -1,0 +1,35 @@
+The code i wrote the first two tests with.
+
+#include <stdio.h>
+
+int main (void) 
+{
+	int i;
+	printf("\n2nd 6000 lines test - SHOULD BE NOT BALANCED:\n\n");
+	for (i=0; i<990; ++i) 
+	{
+		printf("{\n");
+		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+		printf("/* Testing multiple line comment\n");
+		printf(" { {{ [][] should still be in comment\n");
+		printf("*/ () /* should be balanced */\n");
+		printf("	}	  \n");
+	}
+	printf("{[][]} hi {[(])} /* should not be balanced */\n");
+	for (i=0; i<10; ++i) 
+	{
+		printf("{\n");
+		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+		printf("/* Testing multiple line comment\n");
+		printf(" { {{ [][] should still be in comment\n");
+		printf("*/ () /* should be balanced */\n");
+		printf("	}	  \n");
+	}
+	printf("\nthis should be line 6006\n");
+	printf("\nWhole text should *NOT* be balanced cause of line 5944 - check result\n");
+	
+	return 0;
+}
+
+this should be line number 34
+The text should be balanced - check the result

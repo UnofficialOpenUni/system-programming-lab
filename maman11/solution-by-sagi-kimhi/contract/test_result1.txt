@@ -1,0 +1,20 @@
+
+********************** Hello And Welcome! **********************
+This program is meant to help you shorten consecutive series
+of 3 or more alphanumeric characters within a line of string.
+Please make sure that your line of input is no longer than 80 characters.
+If it is longer, then only the first 80 will be scanned and shortened.
+
+as an example, the input abcdef12345 will be shortened to a-f1-5 
+
+In order to begin, please provide a line of input...
+*******************************************************************
+
+
+Your input was: 
+Hello, ABC my name is 1234567 wxyz{|} abc de 123 ABCdEFGH Sagi 
+
+
+The shortened string is: 
+Hello, A-C my name is 1-7 w-z{|} a-c de 1-3 A-CdE-H Sagi 
+

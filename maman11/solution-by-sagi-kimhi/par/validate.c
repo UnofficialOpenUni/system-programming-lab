@@ -1,120 +1,190 @@
-/*	
-	This file contains one global/public function - validate(char[line]), as well as two additional static functions used
-	the global function in order to validate proper nesting of brackets within one or numerous lines of string. 
-*/
+/****************************************************************************************************
+*																									*
+*	This file was seperated from the main file and fucntion of par.c to provide usage of static		*
+*	functions that should not be accesible to an ordinary user of this program in order to prevent	*
+*	misuses of those functions that may result in unexpected/undefined behavior of the program.		*
+*																									*
+****************************************************************************************************/
 
-/* ----------------------------------INCLUDES, PROTOTYPES AND CONSTANTS SECTION---------------------------------- */
 #include "par.h"
 
-/*	isSpecialLine(): checks if the string given as argument is a "special line".
-	returns 0 if the line is not special.
+/****************************************************
+*			STATIC FUNCTION PROTOTYPES:				*
+****************************************************/
+
+/*	isSpecialLine(): checks if the string given as argument is a "special line". returns 0 if the line is not special.
 	if the line is special it will return INCREASE_CNT for an opening bracket and DECREASE_CNT for a closing bracket. */
 static short isSpecialLine(char line[]);
-/*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are
-	properly nested (line is balanced) or not (line is not balanced). The validation of this method relies 
-	on the usage  of a stack model, and on changes and condition checks done on the pointer argument which
-	points to an int variable which indicates if the character being tested is nested within a string or comment,
-	or is outside of any of those two and therefore can affect the proper nesting of brackets in the line.
-	returns 1 if the string is balanced or 0 if it isn't. */
+/*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are properly nested.
+	returns BALANCED if they are, and NOT_BALANCED if they aren't */
 static short isBalancedLine(char line[], int *state);
+/*	matchBrackets(): send a character argument with the value of INIT_MATCH_BRACKETS to empty the function's stack.
+	This function checks whether or not the character argument is a paranthese/bracket, and by making use of
+	a stack model, matches corrosponding opening and closing brackets/parentheses. make sure to empty the stack
+	before every first use. the balance argument is set to BALANCED if the stack is empty, otherwise, UNBALANCED */
+static void matchBrackets(char c, short *balance);
+/* initStack(): A static function to be used by matchBrackets() to re/initialize its stack */
+static void initStack(short stack[]);
+/* push(): push a character into the stack	*/
+static void push(char c, short stack[], short *stackIndex);
+/* pop(): pop a character out of the stack */
+static void pop(char c, short stack[], short *stackIndex);
 
-enum text_states {OUT, IN_STRING, IN_COMMENT};	/* defines different states essential for testing the balance of the text */
-/* -------------------------------END OF INCLUDES, PROTOTYPES AND CONSTANTS SECTION------------------------------- */
+
+enum TextStates {OUT, IN_STRING, IN_COMMENT};	/* defines different states essential for testing the balance of the text */
 
 
-/* -----------------------------------------FUNCTION DEFININTIONS SECTION----------------------------------------- */
-/*	validate(): prints whether or not the parentheses/brackets in the string given as argument are balanced.
-	this method keeps a static counter to keep track of the balance of all the lines that were tested
-	since the begining of the program.
-	returns whether or not all of the lines combined that went through validation from the begining of the
-	program are balanced - 1 if they are, 0 if they aren't.
-	special lines will not make the text unbalanced although they count as unbalanced as an individual line. */
+/****************************************************
+*					FUNCTIONS:						*
+****************************************************/
+
+/*	validate(): validates proper nesting of brackets/parentheses within the character string argument 
+	and prints the result. the function also keeps track of the global balance of all of the previous
+	strings it had scanned since the initialization of the program by using a static variable.
+	returns BALANCED or NOT_BALANCED - based on its current global balance variable */
 short validate(char line[])
 {
-	static int lineNum, specialBrackCnt, state; /* keeps track of line number, opening/closing brackets in special lines and state */
-	short special; 			/* temporary variable to save the returned value from isSpecialLine() */
-	printf("\n%22s%4d: %s\n", "Input for line number ",  ++lineNum, line);
-	printf("This line is ");
-	if (state==OUT && (special=isSpecialLine(line))) { /* if outside of any comment or string and (the line is a special line - save the returned value) */
-		if (specialBrackCnt!=FAILURE) /* if none of previous tested lines has damaged the balance of the whole input */
+	static int specialBrackCnt, state;			/* keeps track of opening/closing brackets in special lines and state */
+	short special; 								/* temporary variable to save the returned value from isSpecialLine() */
+	
+	if (state == OUT && (special = isSpecialLine(line))) {
+		if (specialBrackCnt != FAILURE)
 			specialBrackCnt += special;
-		printf("*NOT* balanced.\n");
+		printLineBalance(NOT_BALANCED);
 	}
-	else if (isBalancedLine(line, &state)) /* checks if the line is balanced */
-			printf("balanced.\n");
-	else {							/* if the line is both not special and not balanced */
-		specialBrackCnt=FAILURE; /* then the whole input can no longer be seen as balanced/valid */
-		printf("*NOT* balanced.\n");
+	else if (isBalancedLine(line, &state))
+			printLineBalance(BALANCED);
+	else {										/* if the line is both not special and not balanced */
+		specialBrackCnt = FAILURE; 				/* then the whole input can no longer be seen as balanced/valid */
+		printLineBalance(NOT_BALANCED);
 	}
-	return (!specialBrackCnt); /* if the count is 0 - all open brackets had a matching closing bracket */
+	return (specialBrackCnt == 0) ? BALANCED: NOT_BALANCED; /* if the count is 0 - all open brackets had matching closing brackets */
 	
 }
 
-/*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are
-	properly nested (line is balanced) or not (line is not balanced). The validation of this method relies 
-	on the usage  of a stack model, and on changes and condition checks done on the pointer argument which
-	points to an int variable which indicates if the character being tested is nested within a string or comment,
-	or is outside of any of those two and therefore can affect the proper nesting of brackets in the line.
-	returns 1 if the string is balanced or 0 if it isn't. */
-static short isBalancedLine(char line[], int *state)
-{
-	short stack_index;	/* will save the returned value from pushOrPop() which represents it's current stack index */
-	short i;
-	
-	stack_index=pushOrPop(INIT_PUSHORPOP); /* reinitialize the stack of pushOrPop before scaning the new line */
-	for (i=stack_index=0; line[i]!='\0'; ++i) {
-		if (isalnum(line[i]) || isspace(line[i]))	/* alphanumeric and whitespace characters are not relevant to the */
-			continue;								/* balance of the text, therefore move on to the next character */
-		switch (*state) {
-			case OUT:				/* if outside of any string or comment */
-				if (line[i]=='\"')
-					*state = IN_STRING;
-				else if (line[i]=='/' && line[i+1]=='*') {
-					*state = IN_COMMENT;
-					++i;
-				}
-				else	/* if the begining of a string or comment was not encountered */
-					stack_index = pushOrPop(line[i]); /* then the current character may be a bracket - pushOrPop() tests it */
-				break;
-				
-			case IN_STRING:			/* check for a character that breaks out of the string */
-				if (line[i]=='\"')
-					*state = OUT;
-				break;
-				
-			case IN_COMMENT:			/* check for a set of charactes that breaks out of the comment */
-				if (line[i]=='*' && line[i+1]=='/') {
-					*state = OUT;
-					++i;
-				}
-				break;
-		}
-	}
-	/* returns whether or not the stack is empty (if its empty then any brackets existed were properly nested) */
-	return (!stack_index);	
-}
+/****************************************************
+*				STATIC FUNCTIONS:					*
+****************************************************/
 
-/*	isSpecialLine(): checks if the string given as argument is a "special line".
-	returns 0 if the line is not special.
-	if the line is special it will return INCREASE_CNT for an opening bracket and DECREASE_CNT for a closing bracket.
-	A line is considered to be "special" if it only contains a single bracket - '{' or '}', and no other 
-	additional characters that aren't considered as "white space". */
+/*	isSpecialLine(): checks if the string given as argument is a "special line". returns 0 if the line is not special.
+	if the line is special it will return INCREASE_CNT for an opening bracket and DECREASE_CNT for a closing bracket. */
 static short isSpecialLine(char line[])
 {
-	int i, temp;
+	int temp, i = 0;
 	
-	i=0;
-	while (line[i]!='\0' && isspace(line[i])) /* skip all whitespaces until a character or end of line are reached */
+	while (line[i] != '\0' && isspace(line[i])) /* skip all whitespaces until a character or end of string are reached */
 		++i;
-	if ((temp=line[i++]) == '{' || temp == '}') {	/* if reached a bracket of the correct type */
-		while (line[i]!='\0' && isspace(line[i]))	/* keep scanning for non whitespace characters */
+	if ((temp = line[i++]) == '{' || temp == '}') {		/* saving the non-whitespace char into temp, and checking if its a bracket */
+		while (line[i]!='\0' && isspace(line[i]))		/* keep skipping whitespaces */
 			++i;
-		if (line[i]=='\0') {	/* if we've reached the end of the line, then no additional non whitespace character exist */
+		if (line[i] == '\0') {			/* if we've reached the end of the line, then no additional non whitespace character exist */
 			if (temp=='{')
-				return INCREASE_CNT;	/* if the bracket was an open bracket, return an indication to increase 1 count */
+				return INCREASE_CNT;
 			else
-				return DECREASE_CNT;	/* if it was a closing bracket, return an indication to decrease 1 count */
+				return DECREASE_CNT;
 		}
 	}
 	return 0; /* if no brackets were found then the line is not a special line */
+}
+
+
+/*	isBalancedLine(): checks if the parentheses/brackets within the string given as argument are properly nested.
+	returns BALANCED if they are, and NOT_BALANCED if they aren't */
+static short isBalancedLine(char line[], int *state)
+{
+	short i, bracketBalance = BALANCED;						/* represents the balance of brackets in the line */
+	matchBrackets(INIT_MATCH_BRACKETS, &bracketBalance); 	/* reinitializes the stack of matchBrackets() */
+	
+	for (i = 0; line[i] != '\0'; ++i) {
+		if (isalnum(line[i]) || isspace(line[i]))	/* alphanumeric and whitespace characters are not relevant to the */
+			continue;								/* balance of the text, therefore we move on to the next character */
+			
+		switch (*state) {
+			case OUT:
+				if (line[i] == '\"')
+					(*state) = IN_STRING;
+				else if (line[i] == '/' && line[i+1] == '*') {
+					(*state) = IN_COMMENT;
+					++i;
+				}
+				else
+					matchBrackets(line[i], &bracketBalance); /* the current character may be a bracket - matchBrackets() tests it */
+				break;
+				
+			case IN_STRING:
+				if (line[i] == '\"')
+					(*state) = OUT;
+				break;
+				
+			case IN_COMMENT:
+				if (line[i] == '*' && line[i+1] == '/') {
+					(*state) = OUT;
+					++i;
+				}
+				break;
+		}
+	}
+	if ((*state) == IN_STRING)	/* Strings may only last 1 line by definition of this maman */
+		(*state) = OUT; 
+	return (bracketBalance);
+}
+
+
+/****************************************************
+*				BRACKET STACK MODULE:				*
+****************************************************/
+
+/*	matchBrackets(): To empty the function's stack, send a character argument with the value of INIT_MATCH_BRACKETS.
+	This function checks whether or not the character argument is a paranthese/bracket, and by making use of
+	a stack model, matches corrosponding opening and closing brackets/parentheses. make sure to empty the stack
+	before every first use. the balance argument is set to BALANCED if the stack is empty, otherwise, UNBALANCED */
+static void matchBrackets(char c, short *balance)
+{
+	static short stack[STACK_SIZE], stackIndex; /* A stack to keep track of matching opening/closing bracket types. */
+	
+	if (c == INIT_MATCH_BRACKETS) {				/* reinitializes the stack for a new use of the function */
+		initStack(stack);
+		stackIndex = 0;
+	}
+	else if (stackIndex != FAILURE) {			/* if no previous push or pop attempts resulted in failure */
+		if (c == '{' || c == '[' || c == '(') 
+			push(c, stack, &stackIndex);
+		else if (c == '}' || c == ']' || c == ')') {
+			switch (c) {					
+				case '}': c='{'; break;
+				case ')': c='('; break;
+				case ']': c='['; break;
+			}
+			pop(c, stack, &stackIndex);
+		}
+	}
+	(*balance) = (!stackIndex) ? BALANCED: NOT_BALANCED;
+}
+
+/* 	initStack(): sets all stack values to 0. */
+static void initStack(short stack[])
+{
+	int i;
+	for (i = 0; i<STACK_SIZE; stack[i++] = 0);
+}
+
+/*	pop(): Attempts to pop a bracket out of the stack with the condition that the  
+	bracket given as argument will be equal to the last bracket in the stack.
+	stackIndex is set to FAILURE upon, well... you can probably guess... */
+static void pop(char c, short stack[], short *stackIndex)
+{
+	if ((*stackIndex)<=STACK_SIZE && (*stackIndex)>0 && c==stack[(*stackIndex)-1])
+		stack[--(*stackIndex)] = 0;
+	else
+		(*stackIndex) = FAILURE;
+}
+
+/*	push(): Attempts to push a bracket into the stack at a certain index.
+	stackIndex will be set to FAILURE if the attempt had failed for any reason */
+static void push(char c, short stack[], short *stackIndex)
+{
+	if ((*stackIndex)<STACK_SIZE)
+		stack[(*stackIndex)++] = c;
+	else
+		(*stackIndex) = FAILURE;
 }

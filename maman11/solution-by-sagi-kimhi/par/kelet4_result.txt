@@ -1,0 +1,125 @@
+
+******************************** Hello And Welcome! ********************************
+This is a text validation program.
+The program's function is to validate proper nesting of brackets within a given input
+If you are using this program from CMD or Terminal, you can stop this program at any point
+by using the keyboard combination Ctrl+Z for Windows CMD or Ctrl+D for Terminal
+This program can validate an infinite number of lines. Yet, the length of each seperate line
+must be no longer than a 100 characters, or else, only the first 100 will be scanned.
+
+In order to begin the validation, please provide a line of input...
+*************************************************************************************
+
+
+Input for line number     1: The code i wrote the first two tests with.
+This line is balanced
+
+Input for line number     2: but i took out the special lines.
+This line is balanced
+
+Input for line number     3: 
+This line is balanced
+
+Input for line number     4: #include <stdio.h>
+This line is balanced
+
+Input for line number     5: 
+This line is balanced
+
+Input for line number     6: int main (void) 
+This line is balanced
+
+Input for line number     7: {
+This line is *NOT* balanced
+
+Input for line number     8: 	int i;
+This line is balanced
+
+Input for line number     9: 	printf("\n2nd 6000 lines test - SHOULD BE NOT BALANCED:\n\n");
+This line is balanced
+
+Input for line number    10: 	for (i=0; i<990; ++i) {
+This line is *NOT* balanced
+
+Input for line number    11: 		printf("{\n");
+This line is balanced
+
+Input for line number    12: 		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+This line is balanced
+
+Input for line number    13: 		printf("/* Testing multiple line comment\n");
+This line is balanced
+
+Input for line number    14: 		printf(" { {{ [][] should still be in comment\n");
+This line is balanced
+
+Input for line number    15: 		printf("*/ () /* should be balanced */\n");
+This line is balanced
+
+Input for line number    16: 		printf("	}	  \n");
+This line is balanced
+
+Input for line number    17: 	}
+This line is *NOT* balanced
+
+Input for line number    18: 	printf("{[][]} hi {[(])} /* should not be balanced */\n");
+This line is balanced
+
+Input for line number    19: 	for (i=0; i<10; ++i) 
+This line is balanced
+
+Input for line number    20: 	{
+This line is *NOT* balanced
+
+Input for line number    21: 		printf("{\n");
+This line is balanced
+
+Input for line number    22: 		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+This line is balanced
+
+Input for line number    23: 		printf("/* Testing multiple line comment\n");
+This line is balanced
+
+Input for line number    24: 		printf(" { {{ [][] should still be in comment\n");
+This line is balanced
+
+Input for line number    25: 		printf("*/ () /* should be balanced */\n");
+This line is balanced
+
+Input for line number    26: 		printf("	}	  \n");
+This line is balanced
+
+Input for line number    27: 	}
+This line is *NOT* balanced
+
+Input for line number    28: 	printf("\nthis should be line 6006\n");
+This line is balanced
+
+Input for line number    29: 	printf("\nWhole text should *NOT* be balanced cause of line 5944 - check result\n");
+This line is balanced
+
+Input for line number    30: 	
+This line is balanced
+
+Input for line number    31: 	return 0;
+This line is balanced
+
+Input for line number    32: }
+This line is *NOT* balanced
+
+Input for line number    33: 
+This line is balanced
+
+Input for line number    34: this should be line number 34
+This line is balanced
+
+Input for line number    35: The text should be NOT balanced because of line number 10 - check the result
+This line is balanced
+
+
+********************** RESULT **********************
+
+	The entire file/input was NOT balanced
+
+****************************************************
+
