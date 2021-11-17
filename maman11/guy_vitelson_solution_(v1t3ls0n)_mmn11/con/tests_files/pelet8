@@ -1,0 +1,20 @@
+############################################################################
+
+This program purpose is to shorten any string of text you want to
+As long as it's max character size is not over 80 characters.
+
+##############################################################################
+
+**_ Please Insert Text: _**
+
+The Text You Have Inserted Is:
+
+123456abcdef$$$$$$$%%%%%%%%
+
+And Our Result Is:
+
+1-6a-f$$$$$$$%%%%%%%%
+
+**_ The Result Is The Shorter Version Of The Text You Have Enterd. _**
+
+Thank You And Goodbye :)

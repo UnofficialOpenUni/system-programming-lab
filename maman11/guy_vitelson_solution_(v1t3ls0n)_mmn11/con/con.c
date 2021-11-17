@@ -1,60 +1,79 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "data.h"
+
+#define MAX_STR_LENGTH 81
+#define MIN_SEQ_LENGTH 3
+
+typedef enum
+{
+    Num = 2,
+    Upper = 3,
+    Lower = 4,
+    NonDigit = -1
+} DigitType;
+
+typedef enum
+{
+    False,
+    True
+} Bool;
 
 void contract(char[MAX_STR_LENGTH], char[MAX_STR_LENGTH], int);
-int getCharType(int);
-int isNextCharFollowingCurrent(int, int);
+DigitType getCharType(int);
+Bool isNextCharFollowingCurrent(int, int);
 int main()
 {
     char s1[MAX_STR_LENGTH], s2[MAX_STR_LENGTH];
     int length;
-    printf("\nThis program purpose is to shorten any string of text you want to,\nas long as it's max character size is not over 80 characters...\n\n");
-    printf("Please enter string of text:\n\n");
+    printf("\n############################################################################\n");
+    printf("\nThis program purpose is to shorten any string of text you want to\nAs long as it's max character size is not over 80 characters.\n");
+    printf("\n##############################################################################");
+    printf("\n\n*** Please Insert Text: ***\n\n");
     fgets(s1, MAX_STR_LENGTH, stdin);
     length = strlen(s1);
-    printf("You entered:\n%s\n\n", s1);
+    printf("\nThe Text You Have Inserted Is:\n\n%s\n\n", s1);
     contract(s1, s2, length);
-    printf("The Resulted shorter text we made for you is:\n%s\n\nThank you and goodbye.\n\n", s2);
+    printf("\nAnd Our Result Is:\n\n%s\n\n*** The Result Is The Shorter Version Of The Text You Have Enterd. ***\n\nThank You And Goodbye :)\n\n\n", s2);
 
     return 0;
 }
 
-int getCharType(int asciValue)
+DigitType getCharType(int asciValue)
 {
     if (islower(asciValue))
-        return LOWERCASE_CHAR;
+        return Lower;
     else if (isupper(asciValue))
-        return UPPERCASE_CHAR;
+        return Upper;
     else if (isdigit(asciValue))
-        return NUMBER;
+        return Num;
     else
-        return NOT_DIGIT_NOR_CHARACTER;
+        return NonDigit;
 }
 
-int isNextCharFollowingCurrent(int next, int current)
+Bool isNextCharFollowingCurrent(int next, int current)
 {
     /*  
     checking if the current character in the string and the next one 
     are of the same type (number,lowercase digit,uppercase digit and so forth)
     */
-    int areTypesMatch = getCharType(next) == getCharType(current) ? 1 : 0;
+    Bool areTypesMatch = getCharType(next) == getCharType(current) ? 1 : 0;
 
     /* validating next char are digits or characters and not special characters*/
-    int areTypesValid = areTypesMatch && getCharType(current) != NOT_DIGIT_NOR_CHARACTER ? 1 : 0;
+    Bool areTypesValid = areTypesMatch && getCharType(current) != NonDigit ? 1 : 0;
     /* checking the ascii values of the current character and the next one to see it they are sequential*/
-    int areValuesSequentials = ((next - current) == 1) ? 1 : 0;
+    Bool areValuesSequentials = ((next - current) == 1) ? 1 : 0;
 
     /* if both next and current are of the same type (both are numbers/lowercase digits/etc) and have sequential ascii values
     then this function will return true (1) else it will return false (0) 
     */
-    return areTypesValid && areValuesSequentials ? 1 : 0;
+    return areTypesValid && areValuesSequentials;
 }
 
 void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
 {
-    int i, k, count = 0, startIndex = 0, endIndex = 0, isItSequential = 0;
+    int i, k, count = 0, startIndex = 0, endIndex = 0;
+    Bool isItSequential = False;
     for (i = k = 0; i < length; i++)
     {
 
@@ -109,11 +128,3 @@ void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
         }
     }
 }
-
-/*
-Tests:
-Input Value:
-abcdef#LLMN 67890123#HIJKMNOpqrstu(?@AB,1124-8)
-Wished Result :
-a-f#LL-N 6-90-3#H-KM-Op-u(?@AB,1124-8)
- */

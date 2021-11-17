@@ -1,0 +1,44 @@
+
+******************************** Hello And Welcome! ********************************
+This is a text validation program.
+The program's function is to validate proper nesting of brackets within a given input
+If you are using this program from CMD or Terminal, you can stop this program at any point
+by using the keyboard combination Ctrl+Z for Windows CMD or Ctrl+D for Terminal
+This program can validate an infinite number of lines. Yet, the length of each seperate line
+must be no longer than a 100 characters, or else, only the first 100 will be scanned.
+
+In order to begin the validation, please provide a line of input...
+*************************************************************************************
+
+
+Input for line number     1: Testing string:
+This line is balanced
+
+Input for line number     2: " {{{{{{{{{{{}[][][()()())) should still be balanced 
+This line is balanced
+
+Input for line number     3: string should have ended eventhough it wasnt closed
+This line is balanced
+
+Input for line number     4: and now should be specials (not balanced but globaly balanaced):
+This line is balanced
+
+Input for line number     5: {
+This line is *NOT* balanced
+
+Input for line number     6: }
+This line is *NOT* balanced
+
+Input for line number     7: [](){} ((((({{{{{{{{[[[[[[[[[[]]]]]]]]]]}}}}}}}})))))
+This line is balanced
+
+Input for line number     8: should be balanced - check result
+This line is balanced
+
+
+********************** RESULT **********************
+
+	The entire file/input was balanced
+
+****************************************************
+

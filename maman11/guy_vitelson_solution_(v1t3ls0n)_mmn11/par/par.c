@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#define MAX_LINE_LENGTH 100
+#define MAX_LINE_LENGTH 101
 #define ASCII_NEW_LINE 10
 #define ASCII_EMPTY_SPACE 32
 #define ASCII_DOUBLE_QUOTES 34
@@ -36,17 +36,18 @@ Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LIN
 Bool evalSingleLine(char line[MAX_LINE_LENGTH]);
 State handleState(State prevState, int current, int prev);
 
-void getTextAndEvalGlobally();
+void getTextAndAnalyzeFully();
 void printCurrentLineResult(Bool result);
 void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
 
 int main()
 {
-    printf("~ In this program each line of your code will be evaluated seperately,\nand result will show up immediately as you press enter to start a new line.\nAt the end of you input you will see the evaluation result for the whole text you've entered.\nThe global result takes count of special lines with correct open or closed curly braces.~\n\n *** Good Luck :) ***\n\n\n");
-    getTextAndEvalGlobally();
+    printf("~ In this program each line of your code will be evaluated seperately,\nand result will show up immediately as you press enter to start a new line.\nAt the end of you input you will see the evaluation result for the whole text you've entered.\nThe global result takes count of special lines with correct open or closed curly braces.\n");
+    printf("\n\n *** ~ START NOW (Insert Text Please) ~ ***\n\n\n\n");
+    getTextAndAnalyzeFully();
     return 0;
 }
-void getTextAndEvalGlobally()
+void getTextAndAnalyzeFully()
 {
     Bool globalResult = True;
     Bool singleLineResult = True;
@@ -54,7 +55,7 @@ void getTextAndEvalGlobally()
     int preDetermentResult = -1, c, j, lastCharBeforeEOF, prevChar, lonelyOpenBracetsCount, lonelyCloseBracetsCount;
     c = j = lastCharBeforeEOF = prevChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
     char line[MAX_LINE_LENGTH] = {0};
-    printf("The Line You Entered is:\n");
+    printf("The Line (First line) You Entered is:\n");
     while ((c = getchar()) != EOF)
     {
         lastCharBeforeEOF = c;
@@ -164,6 +165,7 @@ void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastC
             lastSingleLineResult = evalSingleLine(lastLine);
         else if (strlen(lastLine) == 1)
             lastSingleLineResult = False;
+        lastResult = lastResult && lastSingleLineResult;
         printCurrentLineResult(lastSingleLineResult);
     }
 
