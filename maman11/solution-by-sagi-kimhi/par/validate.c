@@ -124,7 +124,7 @@ static short isBalancedLine(char line[], int *state)
 				break;
 		}
 	}
-	if ((*state) == IN_STRING)	/* Strings may only last 1 line by definition of this maman */
+	if ((*state) == IN_STRING) /*Strings may only last 1 line by definition of this maman*/
 		(*state) = OUT; 
 	return (bracketBalance);
 }

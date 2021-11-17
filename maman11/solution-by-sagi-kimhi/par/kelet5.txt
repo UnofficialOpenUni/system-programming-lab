@@ -1,0 +1,8 @@
+Testing string:
+" {{{{{{{{{{{}[][][()()())) should still be balanced 
+string should have ended eventhough it wasnt closed
+and now should be specials (not balanced but globaly balanaced):
+{
+}
+[](){} ((((({{{{{{{{[[[[[[[[[[]]]]]]]]]]}}}}}}}})))))
+should be balanced - check result
