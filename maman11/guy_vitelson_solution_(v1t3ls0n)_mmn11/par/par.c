@@ -165,6 +165,7 @@ void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastC
             lastSingleLineResult = evalSingleLine(lastLine);
         else if (strlen(lastLine) == 1)
             lastSingleLineResult = False;
+            
         lastResult = lastResult && lastSingleLineResult;
         printCurrentLineResult(lastSingleLineResult);
     }
