@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
 #define MAX_STR_LENGTH 81
+/* This is the maximum input string length we allow the user to insert for a line. */
+
 #define MIN_SEQ_LENGTH 3
+/* 3 is the minimum amount of following character required in order to really minimize (shorten it) any string input with '-' char,
+between first and last following character of the sequence, less than 3 will actually make it longer.
+For example: 
+MIN_SEQ_LENGTH equals 3 ABC (3) => A-C (3) same amount :)
+MIN_SEQ_LENGTH equals 4 ABCD (4) => A-D (3) shorter :)
+MIN_SEQ_LENGTH equals 2 AB (2) => A-B (3) longer?! ):
+ */
 
 typedef enum
 {
