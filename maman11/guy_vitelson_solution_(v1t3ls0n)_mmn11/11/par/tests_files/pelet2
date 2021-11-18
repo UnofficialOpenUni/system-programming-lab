@@ -9,7 +9,21 @@ The global result takes count of special lines with correct open or closed curly
 
 
 The Line (First line) You Entered is:
-()
+/*
+
+*** Valid :) ***
+
+##################################################  
+
+
+hfdjgfj
+
+*** Valid :) ***
+
+##################################################  
+
+
+*/
 
 *** Valid :) ***
 
@@ -17,7 +31,29 @@ The Line (First line) You Entered is:
 
 
 The Line You Entered is:
-[](){}[({})]{[()]}
+/*
+
+*** Valid :) ***
+
+##################################################  
+
+
+{
+
+*** Valid :) ***
+
+##################################################  
+
+
+*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+if(x>y){/*gdsghsdf*/}
 
 *** Valid :) ***
 
@@ -50,7 +86,19 @@ The Line You Entered is:
 
 The Line You Entered is:
 /*]]]]]
+
+*** Valid :) ***
+
+##################################################  
+
+
 [[[[]]]]
+
+*** Valid :) ***
+
+##################################################  
+
+
 */"fsagsdg]]]"
 
 *** Valid :) ***
@@ -59,7 +107,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-"fsagsdg]]]"
+{[()]}
 
 *** Valid :) ***
 
@@ -67,17 +115,20 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-if(x>y){/*gdsghsdf*/}
+/*}
 
 *** Valid :) ***
 
 ##################################################  
 
 
-The Line You Entered is:
-/*
-[]]]]]))))
-"]]]]]"
+dasfsdgds
+
+*** Valid :) ***
+
+##################################################  
+
+
 */
 
 *** Valid :) ***
@@ -86,8 +137,32 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-{[()]}
-*** Valid :) ***
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+{
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+*** Not Valid! :( ***
 
 ##################################################  
 

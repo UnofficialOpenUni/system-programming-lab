@@ -1,0 +1,23 @@
+
+- Desired Output Examples:
+##########################################################################
+~ Example 1:
+~ Input: kelet 1
+~ Expected result:
+  kelet1_case_01_all_lines_are_valid_therefor_globally_valid
+##########################################################################
+~ Example 2:
+  Input: kelet 2
+~ Expected result:
+  kelet2_case_02_not_all_lines_are_valid_but_globally_valid
+##########################################################################
+~ Example 3:
+  Input: kelet 3
+~ Expected result:
+  kelet3_case_03_globally_invalid_because_of_balance_problem
+##########################################################################
+~ Example 4:
+  Input: kelet 4
+~ Expected result: 
+kelet4_case_04_globally_invalid_because_of_invalid_single_lines
+##########################################################################

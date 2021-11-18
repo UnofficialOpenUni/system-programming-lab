@@ -9,61 +9,61 @@ The global result takes count of special lines with correct open or closed curly
 
 
 The Line (First line) You Entered is:
-/*
-This kelet text needs to be valid globally!
 */
 
-*** Valid :) ***
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
-/*
-{
-*/
+if(x>y){/*gdsghsdf*/
 
-*** Valid :) ***
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
-if(x>y){/*gdsghsdf*/}
+[(
 
-*** Valid :) ***
-
-##################################################  
-
-
-The Line You Entered is:
-[()]
-
-*** Valid :) ***
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
-{{{}}}
+{{{}}
 
-*** Valid :) ***
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
-([])
+([{])
 
-*** Valid :) ***
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
 /*]]]]]
+
+*** Valid :) ***
+
+##################################################  
+
+
 [[[[]]]]
-*/"fsagsdg]]]"
+
+*** Valid :) ***
+
+##################################################  
+
+
+*/"fsagsdg]]]"[]()
 
 *** Valid :) ***
 
@@ -71,17 +71,44 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-{[()]}
+]
 
-*** Valid :) ***
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+{[()]})(
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+([)
+
+*** Not Valid! :( ***
 
 ##################################################  
 
 
 The Line You Entered is:
 /*}
-Untill now all kelet need to be valid,
-nuxt lines must not be valid individually
+
+*** Valid :) ***
+
+##################################################  
+
+
+dsssdsf
+
+*** Valid :) ***
+
+##################################################  
+
+
 */
 
 *** Valid :) ***
@@ -90,7 +117,7 @@ nuxt lines must not be valid individually
 
 
 The Line You Entered is:
-{
+{{
 
 *** Not Valid! :( ***
 
@@ -98,7 +125,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-}
+}}
 
 *** Not Valid! :( ***
 
@@ -106,7 +133,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-{
+[])()
 
 *** Not Valid! :( ***
 
@@ -114,12 +141,14 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-}
+{[([}])]}
+
 *** Not Valid! :( ***
 
 ##################################################  
 
 
+The Line You Entered is:
 
-*** Text is Globally Valid :) ***
+*** Text is Not Globally Valid! ): ***
 
