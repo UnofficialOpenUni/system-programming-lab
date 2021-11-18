@@ -58,16 +58,16 @@ void getTextAndAnalyzeFully()
     int j;
     int c, prevChar;
     int lonelyOpenBracetsCount, lonelyCloseBracetsCount, commentStrCharCount;
-
     c = j = commentStrCharCount = prevChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
-
     printf("The Line (First line) You Entered is:\n");
     while ((c = getchar()) != EOF)
     {
         putchar(c);
         if (isspace(c) != 0 && c != ASCII_NEW_LINE)
             c = ASCII_EMPTY_SPACE;
+
         currentState = handleState(currentState, c, prevChar, commentStrCharCount);
+
         switch (currentState)
         {
         case preFalse:
@@ -92,15 +92,18 @@ void getTextAndAnalyzeFully()
 
         case isOut:
         {
-            commentStrCharCount = 0;
             if (isOpeningBracket(c) || isClosingBracket(c) || c == ASCII_EMPTY_SPACE)
             {
-                line[j] = c;
-                j++;
+                if (c != ASCII_EMPTY_SPACE)
+                {
+                    line[j] = c;
+                    j++;
+                }
             }
             else
                 isPossiblySpecialLine = False;
 
+            commentStrCharCount = 0;
             preDetermentResult = -1;
             break;
         }
@@ -108,32 +111,30 @@ void getTextAndAnalyzeFully()
         case newLine:
         {
             if (preDetermentResult != -1)
-            {
                 singleLineResult = preDetermentResult;
-            }
             else
                 singleLineResult = evalSingleLine(line, j);
 
-            /*
+            if (globalResult)
+            {
+                /*
                     IF GLOBAL RESULT HAVE NOT BEEN SET TO FALSE YET BY FIRST CASE OF LINE BEING NOT VALID AND NOT SPECIAL ONE
                     AT THE SAME TIME - THEN WE ARE CHECKING IF THIS NON VALID LINE IS SPECIAL ONE,
                     IF THIS LINE IS SPECIAL IN A VALID WAY, WE COUNT AND REMEMBER THIS, THE FIRST TIME CURRENT LINE IS NOT SPECIAL
                     AND NOT VALID OR SPECIAL LINES BALANCE BREAKS, WE SET GLOBAL RESULT TO FALSE AND NEVER ENTER THIS IF BLOCK AGAIN
                 */
 
-            isPossiblySpecialLine = singleLineResult == False && strlen(line) == 1 ? True : False;
-            if (globalResult == True && isPossiblySpecialLine)
-            {
+                if (!singleLineResult && isPossiblySpecialLine)
+                {
+                    if (line[0] == ASCII_OPENING_CURLY_BRACES)
+                        lonelyOpenBracetsCount++;
+                    else
+                        lonelyCloseBracetsCount++;
 
-                if (line[0] == ASCII_OPENING_CURLY_BRACES)
-                    lonelyOpenBracetsCount++;
-                else
-                    lonelyCloseBracetsCount++;
-
-                if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
-                    globalResult = False;
+                    if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
+                        globalResult = False;
+                }
             }
-
             printCurrentLineResult(singleLineResult);
 
             /* now we reset all variables we need for next line input evaluation */
@@ -163,9 +164,13 @@ void getTextAndAnalyzeFully()
 void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
 {
     Bool lastSingleLineResult = True;
-    lastSingleLineResult = evalSingleLine(lastLine, strlen(lastLine));
-    printCurrentLineResult(lastSingleLineResult);
-    if (lastResult && !lastSingleLineResult && lastChar != ASCII_NEW_LINE)
+    if (lastChar != ASCII_NEW_LINE)
+    {
+        lastSingleLineResult = evalSingleLine(lastLine, strlen(lastLine));
+        printCurrentLineResult(lastSingleLineResult);
+    }
+
+    if (lastResult && !lastSingleLineResult && strlen(lastLine) == 1)
     {
 
         if (lastChar == ASCII_CLOSING_CURLY_BRACES)
