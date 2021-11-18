@@ -122,9 +122,12 @@ void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
         (current char value does not follow the next value and we are not currently inside a sequence) */
         else
         {
+
             str2[k] = str1[i];
             k++;
             count = 0;
         }
     }
+    // make last char of shorter string result the end of that string.
+    str2[k] = '\0';
 }
