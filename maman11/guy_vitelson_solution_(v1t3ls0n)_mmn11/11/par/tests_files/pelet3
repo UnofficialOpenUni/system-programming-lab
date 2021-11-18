@@ -9,23 +9,44 @@ The global result takes count of special lines with correct open or closed curly
 
 
 The Line (First line) You Entered is:
+/*
+
+*** Valid :) ***
+
+##################################################  
+
+
+ddddd*/
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+/*
+
+*** Valid :) ***
+
+##################################################  
+
+
+{
+
+*** Valid :) ***
+
+##################################################  
+
+
 */
 
-*** Not Valid! :( ***
+*** Valid :) ***
 
 ##################################################  
 
 
 The Line You Entered is:
-if(x>y){/*gdsghsdf*/
-
-*** Not Valid! :( ***
-
-##################################################  
-
-
-The Line You Entered is:
-[(
+{
 
 *** Not Valid! :( ***
 
@@ -33,7 +54,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-{{{}}
+{
 
 *** Not Valid! :( ***
 
@@ -41,17 +62,53 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-([{])
+if(x>y){/*gdsghsdf*/}
 
-*** Not Valid! :( ***
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+[()]
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+{{{}}}
+
+*** Valid :) ***
+
+##################################################  
+
+
+The Line You Entered is:
+([])
+
+*** Valid :) ***
 
 ##################################################  
 
 
 The Line You Entered is:
 /*]]]]]
+
+*** Valid :) ***
+
+##################################################  
+
+
 [[[[]]]]
-*/"fsagsdg]]]"[]()
+
+*** Valid :) ***
+
+##################################################  
+
+
+*/"fsagsdg]]]"
 
 *** Valid :) ***
 
@@ -59,33 +116,28 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-]
+{[()]}
 
-*** Not Valid! :( ***
-
-##################################################  
-
-
-The Line You Entered is:
-{[()]})(
-
-*** Not Valid! :( ***
-
-##################################################  
-
-
-The Line You Entered is:
-([)
-
-*** Not Valid! :( ***
+*** Valid :) ***
 
 ##################################################  
 
 
 The Line You Entered is:
 /*}
-Untill now all kelet need to be valid,
-nuxt lines must not be valid individually
+
+*** Valid :) ***
+
+##################################################  
+
+
+hdfhdfhj
+
+*** Valid :) ***
+
+##################################################  
+
+
 */
 
 *** Valid :) ***
@@ -94,7 +146,7 @@ nuxt lines must not be valid individually
 
 
 The Line You Entered is:
-{{
+{
 
 *** Not Valid! :( ***
 
@@ -102,7 +154,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-}}
+}
 
 *** Not Valid! :( ***
 
@@ -110,7 +162,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-[])()
+{
 
 *** Not Valid! :( ***
 
@@ -118,7 +170,7 @@ The Line You Entered is:
 
 
 The Line You Entered is:
-{[([}])]}
+}
 
 *** Not Valid! :( ***
 
@@ -126,6 +178,28 @@ The Line You Entered is:
 
 
 The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+
+*** Not Valid! :( ***
+
+##################################################  
+
+
+The Line You Entered is:
+}
+*** Not Valid! :( ***
+
+##################################################  
+
+
 
 *** Text is Not Globally Valid! ): ***
 

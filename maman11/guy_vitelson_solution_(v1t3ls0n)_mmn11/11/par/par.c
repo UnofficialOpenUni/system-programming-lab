@@ -83,7 +83,12 @@ void getTextAndAnalyzeFully()
             preDetermentResult = True;
             break;
         }
-
+        case inMultiLineComment:
+        {
+            commentStrCharCount++;
+            preDetermentResult = True;
+            break;
+        }
         case inString:
         {
             preDetermentResult = True;
@@ -202,6 +207,7 @@ State handleState(State prevState, int current, int prev, int commentStrCharCoun
 {
     State state = prevState;
     state = state == inMultiLineComment ? inComment : state;
+
     switch (current)
     {
     case ASCII_DOUBLE_QUOTES:
@@ -227,23 +233,22 @@ State handleState(State prevState, int current, int prev, int commentStrCharCoun
 
             if (prev == ASCII_ASTERISK)
             {
+
                 if (state == inComment && commentStrCharCount > 1)
                     state = isOut;
                 else
-                {
-                    /* 
-                    SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
-                    THAT DOES NOT EXIST,IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENTCANNOT BE VALID
-
-                    OR IF last 3 character in input were / than * and than / without anything between its a mistake in comment syntax*/
-
                     state = preFalse;
-                    break;
-                }
+                /* 
+                    IF STATE == IN COMMENT IS FALSE:
+                    IT IS A SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
+                    THAT DOES NOT EXIST, IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENT CANNOT BE VALID
+                    IF commentStrCharCount > 1 IS FALSE:
+                    IT MEANS THAT THE last 3 character in input were / than * and than / without anything between 
+                    its a serious mistake in comment syntax
+                    */
             }
-
-            break;
         }
+        break;
     }
 
     case ASCII_ASTERISK:
@@ -253,12 +258,9 @@ State handleState(State prevState, int current, int prev, int commentStrCharCoun
         else
         {
             if (state == isOut && prev == ASCII_FORWARD_SLASH)
-            {
                 state = inComment;
-            }
-
-            break;
         }
+        break;
     }
 
     case ASCII_NEW_LINE:
