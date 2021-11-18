@@ -19,6 +19,7 @@ typedef enum
     inComment = 4,
     inString = 5,
     newLine = 6,
+    inMultiLineComment = 7,
     preFalse = -2
 
 } State;
@@ -33,9 +34,8 @@ Bool isOpeningBracket(int asciValue);
 Bool isClosingBracket(int asciValue);
 Bool areBracketsOfSameTypeButInverse(int o, int c);
 Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LINE_LENGTH / 2], int length);
-Bool evalSingleLine(char line[MAX_LINE_LENGTH]);
-State handleState(State prevState, int current, int prev);
-
+Bool evalSingleLine(char line[MAX_LINE_LENGTH], int length);
+State handleState(State prevState, int current, int prev, int commentStrCharCount);
 void getTextAndAnalyzeFully();
 void printCurrentLineResult(Bool result);
 void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
@@ -51,46 +51,57 @@ void getTextAndAnalyzeFully()
 {
     Bool globalResult = True;
     Bool singleLineResult = True;
+    Bool isPossiblySpecialLine = True;
     State currentState = isOut;
-    int preDetermentResult = -1, c, j, lastCharBeforeEOF, prevChar, lonelyOpenBracetsCount, lonelyCloseBracetsCount;
-    c = j = lastCharBeforeEOF = prevChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
     char line[MAX_LINE_LENGTH] = {0};
+    int preDetermentResult = -1;
+    int j;
+    int c, prevChar;
+    int lonelyOpenBracetsCount, lonelyCloseBracetsCount, commentStrCharCount;
+
+    c = j = commentStrCharCount = prevChar = lonelyCloseBracetsCount = lonelyOpenBracetsCount = 0;
+
     printf("The Line (First line) You Entered is:\n");
     while ((c = getchar()) != EOF)
     {
-        lastCharBeforeEOF = c;
         putchar(c);
         if (isspace(c) != 0 && c != ASCII_NEW_LINE)
             c = ASCII_EMPTY_SPACE;
-        currentState = handleState(currentState, c, prevChar);
-
+        currentState = handleState(currentState, c, prevChar, commentStrCharCount);
         switch (currentState)
         {
         case preFalse:
         {
+            isPossiblySpecialLine = False;
             preDetermentResult = False;
             break;
         }
 
         case inComment:
         {
-            preDetermentResult = j > 0 ? -1 : True;
+            commentStrCharCount++;
+            preDetermentResult = True;
             break;
         }
+
         case inString:
         {
-            preDetermentResult = j > 0 ? -1 : True;
+            preDetermentResult = True;
             break;
         }
 
         case isOut:
         {
-            if (c != ASCII_EMPTY_SPACE)
+            commentStrCharCount = 0;
+            if (isOpeningBracket(c) || isClosingBracket(c) || c == ASCII_EMPTY_SPACE)
             {
                 line[j] = c;
                 j++;
             }
+            else
+                isPossiblySpecialLine = False;
 
+            preDetermentResult = -1;
             break;
         }
 
@@ -98,87 +109,72 @@ void getTextAndAnalyzeFully()
         {
             if (preDetermentResult != -1)
             {
-
                 singleLineResult = preDetermentResult;
-                preDetermentResult = -1;
             }
             else
+                singleLineResult = evalSingleLine(line, j);
+
+            /*
+                    IF GLOBAL RESULT HAVE NOT BEEN SET TO FALSE YET BY FIRST CASE OF LINE BEING NOT VALID AND NOT SPECIAL ONE
+                    AT THE SAME TIME - THEN WE ARE CHECKING IF THIS NON VALID LINE IS SPECIAL ONE,
+                    IF THIS LINE IS SPECIAL IN A VALID WAY, WE COUNT AND REMEMBER THIS, THE FIRST TIME CURRENT LINE IS NOT SPECIAL
+                    AND NOT VALID OR SPECIAL LINES BALANCE BREAKS, WE SET GLOBAL RESULT TO FALSE AND NEVER ENTER THIS IF BLOCK AGAIN
+                */
+
+            isPossiblySpecialLine = singleLineResult == False && strlen(line) == 1 ? True : False;
+            if (globalResult == True && isPossiblySpecialLine)
             {
 
-                if (j == 0)
-                    singleLineResult = True;
-                else if (j > 0)
-                {
-                    if (j > 1)
-                        singleLineResult = evalSingleLine(line);
-                    else if (j == 1)
-                    {
-                        singleLineResult = False;
+                if (line[0] == ASCII_OPENING_CURLY_BRACES)
+                    lonelyOpenBracetsCount++;
+                else
+                    lonelyCloseBracetsCount++;
 
-                        if (globalResult == True)
-                        {
-                            /*
-            IF GLOBAL RESULT HAVE NOT BEEN SET TO FALSE YET BY FIRST CASE OF LINE BEING NOT VALID AND NOT SPECIAL ONE
-            AT THE SAME TIME - THEN WE ARE CHECKING IF THIS NON VALID LINE IS SPECIAL ONE,
-             IF THIS LINE IS SPECIAL IN A VALID WAY, WE COUNT AND REMEMBER THIS, THE FIRST TIME CURRENT LINE IS NOT SPECIAL
-             AND NOT VALID OR SPECIAL LINES BALANCE BREAKS, WE SET GLOBAL RESULT TO FALSE AND NEVER ENTER THIS IF BLOCK AGAIN
-            */
-                            if (line[0] == ASCII_OPENING_CURLY_BRACES || line[0] == ASCII_CLOSING_CURLY_BRACES)
-                            {
-                                if (line[0] == ASCII_OPENING_CURLY_BRACES)
-                                    lonelyOpenBracetsCount++;
-                                else
-                                    lonelyCloseBracetsCount++;
-
-                                if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
-                                    globalResult = False;
-                            }
-                            else
-                                globalResult = False;
-                        }
-                    }
-                }
+                if (lonelyCloseBracetsCount > lonelyOpenBracetsCount)
+                    globalResult = False;
             }
 
             printCurrentLineResult(singleLineResult);
+
+            /* now we reset all variables we need for next line input evaluation */
             memset(line, 0, j);
-            prevChar = 0;
             currentState = isOut;
             singleLineResult = True;
-            j = 0;
+            preDetermentResult = -1;
+            j = prevChar = 0;
+            isPossiblySpecialLine = True;
+            /*
+               just before we make another iteration of this while loop which means user necesserly inserted
+               some character otherwise c would be EOF and we will exit the loop, 
+               we need to print this message for the next line user will complete inserting upfront and after we printed if current line is valid or not,  
+             */
             printf("The Line You Entered is:\n");
         }
+            /* saving the real last character user have inserted for later evaluation by handleState, current char will be saved
+            into c variable the moment we enter this while loop
+            */
         }
         prevChar = c;
     }
 
-    evalTextGlobally(globalResult, line, lastCharBeforeEOF, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
+    evalTextGlobally(globalResult, line, prevChar, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
 }
 
 void evalTextGlobally(Bool lastResult, char lastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
 {
     Bool lastSingleLineResult = True;
-
-    if (lastChar != ASCII_NEW_LINE)
+    lastSingleLineResult = evalSingleLine(lastLine, strlen(lastLine));
+    printCurrentLineResult(lastSingleLineResult);
+    if (lastResult && !lastSingleLineResult && lastChar != ASCII_NEW_LINE)
     {
-        if (strlen(lastLine) > 1)
-            lastSingleLineResult = evalSingleLine(lastLine);
-        else if (strlen(lastLine) == 1)
-            lastSingleLineResult = False;
 
-        lastResult = lastResult && lastSingleLineResult;
-        printCurrentLineResult(lastSingleLineResult);
-    }
-
-    if (lastResult && lastChar != ASCII_NEW_LINE)
-    {
         if (lastChar == ASCII_CLOSING_CURLY_BRACES)
             closedCount++;
         else if (lastChar == ASCII_OPENING_CURLY_BRACES)
             lastResult = False;
     }
 
-    else if (lastResult && closedCount != openCount)
+    if (closedCount != openCount)
         lastResult = False;
 
     if (lastResult)
@@ -197,10 +193,10 @@ void printCurrentLineResult(Bool result)
     printf("\n##################################################  \n\n\n");
 }
 
-State handleState(State prevState, int current, int prev)
+State handleState(State prevState, int current, int prev, int commentStrCharCount)
 {
     State state = prevState;
-
+    state = state == inMultiLineComment ? inComment : state;
     switch (current)
     {
     case ASCII_DOUBLE_QUOTES:
@@ -216,21 +212,26 @@ State handleState(State prevState, int current, int prev)
             break;
         }
     }
-
+        /* /*/
     case ASCII_FORWARD_SLASH:
     {
         if (state == inString)
             break;
         else
         {
+
             if (prev == ASCII_ASTERISK)
             {
-                if (state == inComment)
+                if (state == inComment && commentStrCharCount > 1)
                     state = isOut;
                 else
                 {
-                    /* SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
-                        THAT DOES NOT EXIST,IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENTCANNOT BE VALID */
+                    /* 
+                    SPECIAL ERROR THAT HAPPENS IF USER TYPE (* AND A / STRAIGHT AFTER) TO CLOSE COMMENT
+                    THAT DOES NOT EXIST,IF STATE IS NOT A STRING AND NOT A COMMENT THEN A CLOSING COMMENTCANNOT BE VALID
+
+                    OR IF last 3 character in input were / than * and than / without anything between its a mistake in comment syntax*/
+
                     state = preFalse;
                     break;
                 }
@@ -247,7 +248,9 @@ State handleState(State prevState, int current, int prev)
         else
         {
             if (state == isOut && prev == ASCII_FORWARD_SLASH)
+            {
                 state = inComment;
+            }
 
             break;
         }
@@ -255,8 +258,14 @@ State handleState(State prevState, int current, int prev)
 
     case ASCII_NEW_LINE:
     {
+        if (state == inComment)
+        {
+            printCurrentLineResult(True);
+            state = inMultiLineComment;
+        }
+        else
+            state = newLine;
 
-        state = state != inComment ? newLine : inComment;
         break;
     }
 
@@ -267,49 +276,66 @@ State handleState(State prevState, int current, int prev)
     return state;
 }
 
-Bool evalSingleLine(char line[MAX_LINE_LENGTH])
+Bool evalSingleLine(char line[MAX_LINE_LENGTH], int length)
 {
     int i, j = 0, k = 0, current = 0;
     Bool result = True;
     char open[MAX_LINE_LENGTH / 2] = {0}, closed[MAX_LINE_LENGTH / 2] = {0};
-    for (i = 0; line[i]; i++)
+    /* if no trimmed characters were saved to line variable currently,
+    it means that we have not enter any input that need to be evalutate, there is nothing
+    that influence the state we are in (string, comment,etc) and not any type of brackets
+    on that line so it can be valid automatically.
+    */
+    if (length == 0)
+        return True;
+
+    /* if there is only one character on this line it cannot possibly hold valid opening and closing brackets,
+    therefor automatically not valid.*/
+    else if (length == 1)
+        return False;
+
+    else
     {
-        current = (int)line[i];
-        if (isOpeningBracket(current))
+        for (i = 0; line[i]; i++)
         {
-            open[j] = current;
-            j++;
-        }
-        else if (isClosingBracket(current))
-        {
-            closed[k] = current;
-            k++;
-            /* 
+            current = (int)line[i];
+            if (isOpeningBracket(current))
+            {
+                open[j] = current;
+                j++;
+            }
+            else if (isClosingBracket(current))
+            {
+                closed[k] = current;
+                k++;
+                /* 
                 if k > j return false because bracket sequence cannot hold more closing
                 brackets then opening brackets!
             */
-            if (k > j)
-                return False;
-
-            /* is length are equal its time to evaluate brackets sequence */
-            else if (j == k)
-            {
-                if (j == 1)
-                    result = areBracketsOfSameTypeButInverse(open[0], closed[0]);
-                else if (j > 1)
-                    result = evalBracketSequence(open, closed, k);
-
-                if (result == False)
+                if (k > j)
                     return False;
-                else
+
+                /* is length are equal its time to evaluate brackets sequence */
+                else if (j == k)
                 {
-                    memset(open, 0, j);
-                    memset(closed, 0, k);
-                    j = k = 0;
+                    if (j == 1)
+                        result = areBracketsOfSameTypeButInverse(open[0], closed[0]);
+                    else if (j > 1)
+                        result = evalBracketSequence(open, closed, k);
+
+                    if (result == False)
+                        return False;
+                    else
+                    {
+                        memset(open, 0, j);
+                        memset(closed, 0, k);
+                        j = k = 0;
+                    }
                 }
             }
         }
     }
+
     if (j != k)
         return False;
     return result;
