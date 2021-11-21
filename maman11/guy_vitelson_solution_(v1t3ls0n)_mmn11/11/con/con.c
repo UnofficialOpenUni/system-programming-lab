@@ -3,7 +3,6 @@
 #include <ctype.h>
 #define MAX_STR_LENGTH 81
 /* This is the maximum input string length we allow the user to insert for a line. */
-
 #define MIN_SEQ_LENGTH 3
 /* 3 is the minimum amount of following character required in order to really minimize (shorten it) any string input with '-' char,
 between first and last following character of the sequence, less than 3 will actually make it longer.
@@ -27,9 +26,27 @@ typedef enum
     True
 } Bool;
 
-void contract(char[MAX_STR_LENGTH], char[MAX_STR_LENGTH], int);
-DigitType getCharType(int);
-Bool isNextCharFollowingCurrent(int, int);
+void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length);
+/* @ Function: contract 
+   @ Arguments: str1 is the original string, str2 is a clean string variable that will hold the new minimized string the function will create
+   and length is the length of the original string(str1).
+   @ Desciption: The function takes a string of text and shortens parts of the string that have 3 or more consecutive alphanumeric characters.
+*/
+
+DigitType getCharType(int asciiValue);
+/* @ Function: getCharType 
+   @ Arguemnts: The function get one argument that is an integer which represents asciiValue of a char in the original string and returns
+   DigitType typedef variable.
+   @ Desciption : The function checks if the value of its asciiValue argument is a type of  number, lowercase character, uppercase character 
+   or it is not a alphanumeric digit.
+*/
+Bool isNextCharFollowingCurrent(int next, int current);
+/* @ Function: isNextCharFollowingCurrent 
+   @ Arguemnts: The functions get 2 integers, first one represent the next character in the origial string we are iterating over in contact
+   and the next one represens the current character we are iterating on in contract.
+   @ Desciption : The function checks the value of the first argument(next) is the consecutive alpha-numeric character 
+   of the value of the second argument (current) and then returns True or False (1 or 0) typedef variable.
+*/
 int main()
 {
     char s1[MAX_STR_LENGTH], s2[MAX_STR_LENGTH];
@@ -47,13 +64,13 @@ int main()
     return 0;
 }
 
-DigitType getCharType(int asciValue)
+DigitType getCharType(int asciiValue)
 {
-    if (islower(asciValue))
+    if (islower(asciiValue))
         return Lower;
-    else if (isupper(asciValue))
+    else if (isupper(asciiValue))
         return Upper;
-    else if (isdigit(asciValue))
+    else if (isdigit(asciiValue))
         return Num;
     else
         return NonDigit;
@@ -136,6 +153,6 @@ void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
             count = 0;
         }
     }
-    // make last char of shorter string result the end of that string.
+    /* make last char of shorter string result the end of that string. */
     str2[k] = '\0';
 }
