@@ -1,12 +1,28 @@
 <div align="center">
 	<h1> HELLO AND WELCOME! </h1>
-</div>
+</div></br>
 
-## What is the purpose of this repository:
+## The purpose of this repository:
 
 The purpose of this repository is to provide students of the Open University a comfy platform to share, review, and draw new ideas and ispiration from each other's work of the System Programming Lab course various subjects, (such as solutions to exercises, solutions and testers to various course assignments, etc.)
+</br>
+<div align="center">
+	<h2> Join our Social Media groups: </h2></br>
+	<a href="https://discord.gg/SfHGVJ5s">
+	<img src="https://discord.com/assets/cb48d2a8d4991281d7a6a95d2f58195e.svg" alt="Discord" height="80px" />
+	</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="https://chat.whatsapp.com/FxptbDk4kgBJOleFaRTCHe">
+	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/WhatsApp_logo.svg/200px-WhatsApp_logo.svg.png" alt="Whatsapp" height="80px" />
+	</a>
+</div></br>
 
-## How to get started using this repository
+## Becoming a contributer:
+Becoming a contributer will give you access to review and approve pull requests on the upstream repository, as well as pushing, merging and performing various different actions directly to the upstream repository wihtout needing to fork it and keeping your fork up to date.
+
+If you are not new to Github and are certain in what you're doing and that you won't delete/modify other people's work by mistake, you are more than welcome to request becoming a contributer on `#request-git-access` on [our Discord](https://discord.gg/SfHGVJ5s) :)
+We'd be more than happy to increase the amounts of contributors to this git repo as well as the amount of content uploaded for the benefit of all the students of this course.
+
+## How to get started using this repo:
 
 If you are new to this repository and are using it for the first time, here are a few simple steps to get you started:
 
@@ -64,8 +80,3 @@ If you are new to this repository and are using it for the first time, here are 
 4. Enter the command "git pull origin main" - this will pull all the new changes and will update the files on your PC.
 
 
-## Becoming a contributer:
-Becoming a contributer will give you access to review and approve pull requests on the upstream repository as well as pushing, merging and performing various different actions directly to the upstream repository wihtout needing to fork it and keeping your fork up to date.
-
-If you are not new to Github and are certain in what you're doing and that you want delete/modify other people's work by mistake, you are more than welcome to request to become a contributer on `#request-git-access` on [our Discord](https://discord.gg/SfHGVJ5s) :)
-We'd be more than happy to increase the amounts of contributors to this git repo as well as the amount of content uploaded for the benefit of all the students of this course.
