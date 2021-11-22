@@ -47,7 +47,7 @@ If you are new to this repository and are using it for the first time, here are 
 	example:
 	git clone https://github.com/**YOUR GITHUB USER NAME HERE**/system-programming-lab.git
 	```
-5. Create a new local branch on your name to review, edit, or add new files using the command `git checkout -b <your name>` (the checkout command alone switches branches, the `-b` flag creates a new branch before switching to it):</br></br>
+5. Create a new local branch on your name to review, edit, or add new files -  `git checkout -b <your name>` (the checkout command alone switches branches, the `-b` flag creates a new branch before switching to it):</br></br>
 	```
 	example:
 	git checkout -b Moshe-Kozak
