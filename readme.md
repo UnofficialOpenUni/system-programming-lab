@@ -19,7 +19,7 @@ The purpose of this repository is to provide students of the Open University a c
 ## Becoming a contributer:
 Becoming a contributer will give you access to review and approve pull requests on the upstream repository, as well as pushing, merging and performing various different actions directly to the upstream repository wihtout needing to fork it and keeping your fork up to date.
 
-If you are not new to Github and are certain in what you're doing and that you won't delete/modify other people's work by mistake, you are more than welcome to request becoming a contributer on `#request-git-access` on [our Discord](https://discord.gg/SfHGVJ5s) :)
+If you are not new to Github and are certain in what you're doing and that you won't delete/modify other people's work by mistake, you are more than welcome to request becoming a contributer on `#request-git-access` on [our Discord 😃](https://discord.gg/SfHGVJ5s) </br>
 We'd be more than happy to increase the amounts of contributors to this git repo as well as the amount of content uploaded for the benefit of all the students of this course.
 
 ## How to get started using this repo:
@@ -29,7 +29,7 @@ If you are new to this repository and are using it for the first time, here are 
 ### Copying the files from this repo to your PC:
 1. Click the fork button on the top left corner of this webpage to fork this repository in your Github account.
 2. Create a new folder on your PC to copy and save the files from the repository into.
-3. Open the terminal, and navigate to the new folder you've just created. You can do this by using the "cd" command.
+3. Open the terminal, and navigate to the new folder you've just created. You can do this by using the `cd` command.</br></br>
 	```
 	### navigating into a folder: ###
 	cd <Folder's name>/
@@ -42,12 +42,12 @@ If you are new to this repository and are using it for the first time, here are 
 	### going back to the default folder (home/user) folder: ###
 	cd
 	```
-4. Copy the files from the repository by using the command "git clone <url of the repository>"
+4. Copy the files from the repository by using the command `git clone <url of the repository>`</br></br>
 	```
 	example:
 	git clone https://github.com/**YOUR GITHUB USER NAME HERE**/system-programming-lab.git
 	```
-5. Create a new local branch on your name to review, edit, or add new files using the command "git checkout -b <your name>" (the checkout command alone switches branches, the -b flag creates a new branch before switching to it):
+5. Create a new local branch on your name to review, edit, or add new files using the command `git checkout -b <your name>` (the checkout command alone switches branches, the `-b` flag creates a new branch before switching to it):</br></br>
 	```
 	example:
 	git checkout -b Moshe-Kozak
@@ -61,8 +61,8 @@ If you are new to this repository and are using it for the first time, here are 
 	### Deleting a branch: ###
 	git branch -d name-of-branch-to-be-deleted
 	```
-6. If you wish to upload the changes you've made, you can review your changes using the "git status" command.
-7. To add and commit the new changes use the "git add . " command followed by "git commit -m "A custom message describing the changes" " and then use the command "git push origin <your branch name>"
+6. If you wish to upload the changes you've made, you can review your changes using the `git status` command.
+7. To add and commit the new changes use the `git add .` command followed by</br>`git commit -m "A custom message describing the changes"`  and then use the command `git push origin <your branch name>`</br></br>
 	```
 	example:
 	git add .
@@ -75,8 +75,8 @@ If you are new to this repository and are using it for the first time, here are 
 
 ### Keeping your forked repository and your PC files up to date:
 1. Make sure your forked repository is up to date with the original (AKA upstream) repository by simply navigating to the "<> Code" tab on your repository's Github webpage, and click the "Fetch upstream > Fetch and Merge" button.
-2. To update the repository's files saved to your PC, open the Terminal, and navigate to the repository's folder using the "cd" command.
-3. Enter the command "git status" to make sure you are on the main branch of the git repository, otherwise, use the command "git checkout main" to switch back to the main branch.
-4. Enter the command "git pull origin main" - this will pull all the new changes and will update the files on your PC.
+2. To update the repository's files saved to your PC, open the Terminal, and navigate to the repository's folder using the `cd` command.
+3. Enter the command `git status` to make sure you are on the main branch of the git repository, otherwise, use the command `git checkout main` to switch back to the main branch.
+4. Enter the command `git pull origin main` - this will pull all the new changes and will update the files on your PC.
 
 
