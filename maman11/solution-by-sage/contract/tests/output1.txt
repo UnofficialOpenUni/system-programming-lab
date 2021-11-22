@@ -1,0 +1,40 @@
+
+Input: 
+"Hello gefgare$%^&*''2 this 21klmno@"345567890 is a long lop789#$@#$ textxyz"
+
+
+Shortened Output: 
+"Hello ge-gare$%^&*''2 this 21k-o@"3-55-90 is a long lop7-9#$@#$ textx-z"
+
+
+Input: 
+abcdefghijklmnop0123456789
+
+
+Shortened Output: 
+a-p0-9
+
+
+Input: 
+"abcdefghijklmnop@@0123456789"
+
+
+Shortened Output: 
+"a-p@@0-9"
+
+
+Input: 
+abc1efg2hij3
+
+
+Shortened Output: 
+a-c1e-g2h-j3
+
+
+Input: 
+"a"a"""4434@@@klmn4567b@@b@@c"""  " " "
+
+
+Shortened Output: 
+"a"a"""4434@@@k-n4-7b@@b@@c"""  " " "
+

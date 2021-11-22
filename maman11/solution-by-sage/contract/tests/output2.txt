@@ -1,0 +1,32 @@
+
+Input: 
+”abcdef#LLMN 67890123#HIJKMNOpqrstu(?@AB,1124-8)”
+
+
+Shortened Output: 
+”a-f#LL-N 6-90-3#H-KM-Op-u(?@AB,1124-8)”
+
+
+Input: 
+12345@98765"""56"678"4567..a
+
+
+Shortened Output: 
+1-5@98765"""56"6-8"4-7..a
+
+
+Input: 
+"hey2345TexTefghiXYZaBCdEFG"
+
+
+Shortened Output: 
+"hey2-5TexTe-iX-ZaBCdE-G"
+
+
+Input: 
+123456 789 abcd " efghi "" @ 2 @ @ lmnop
+
+
+Shortened Output: 
+1-6 7-9 a-d " e-i "" @ 2 @ @ l-p
+

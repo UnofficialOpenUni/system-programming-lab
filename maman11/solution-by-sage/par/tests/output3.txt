@@ -1,0 +1,106 @@
+Line input: The code i wrote the first two tests with.
+
+This line is valid
+Line input: 
+
+This line is valid
+Line input: #include <stdio.h>
+
+This line is valid
+Line input: 
+
+This line is valid
+Line input: int main (void) 
+
+This line is valid
+Line input: {
+
+This line is not valid. but might not affect the text balance
+Line input: 	int i;
+
+This line is valid
+Line input: 	printf("\n2nd 6000 lines test - SHOULD BE NOT BALANCED:\n\n");
+
+This line is valid
+Line input: 	for (i=0; i<990; ++i) 
+
+This line is valid
+Line input: 	{
+
+This line is not valid. but might not affect the text balance
+Line input: 		printf("{\n");
+
+This line is valid
+Line input: 		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+
+This line is valid
+Line input: 		printf("/* Testing multiple line comment\n");
+
+This line is valid
+Line input: 		printf(" { {{ [][] should still be in comment\n");
+
+This line is valid
+Line input: 		printf("*/ () /* should be balanced */\n");
+
+This line is valid
+Line input: 		printf("	}	  \n");
+
+This line is valid
+Line input: 	}
+
+This line is not valid. but might not affect the text balance
+Line input: 	printf("{[][]} hi {[(])} /* should not be balanced */\n");
+
+This line is valid
+Line input: 	for (i=0; i<10; ++i) 
+
+This line is valid
+Line input: 	{
+
+This line is not valid. but might not affect the text balance
+Line input: 		printf("{\n");
+
+This line is valid
+Line input: 		printf("{{{{[[[[(((())))]]]]}}}} /* Should be balanced */\n");
+
+This line is valid
+Line input: 		printf("/* Testing multiple line comment\n");
+
+This line is valid
+Line input: 		printf(" { {{ [][] should still be in comment\n");
+
+This line is valid
+Line input: 		printf("*/ () /* should be balanced */\n");
+
+This line is valid
+Line input: 		printf("	}	  \n");
+
+This line is valid
+Line input: 	}
+
+This line is not valid. but might not affect the text balance
+Line input: 	printf("\nthis should be line 6006\n");
+
+This line is valid
+Line input: 	printf("\nWhole text should *NOT* be balanced cause of line 5944 - check result\n");
+
+This line is valid
+Line input: 	
+
+This line is valid
+Line input: 	return 0;
+
+This line is valid
+Line input: }
+
+This line is not valid. but might not affect the text balance
+Line input: 
+
+This line is valid
+Line input: this should be line number 34
+
+This line is valid
+Line input: The text should be balanced - check the result
+
+This line is valid
+The full text is balanced.

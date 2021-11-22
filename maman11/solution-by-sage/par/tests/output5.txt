@@ -1,0 +1,25 @@
+Line input: Testing string:
+
+This line is valid
+Line input: " {{{{{{{{{{{}[][][()()())) should still be balanced 
+
+This line is valid
+Line input: string should have ended eventhough it wasnt closed
+
+This line is valid
+Line input: and now should be specials (not balanced but globaly balanaced):
+
+This line is valid
+Line input: {
+
+This line is not valid. but might not affect the text balance
+Line input: }
+
+This line is not valid. but might not affect the text balance
+Line input: [](){} ((((({{{{{{{{[[[[[[[[[[]]]]]]]]]]}}}}}}}})))))
+
+This line is valid
+Line input: should be balanced - check result
+
+This line is valid
+The full text is balanced.
