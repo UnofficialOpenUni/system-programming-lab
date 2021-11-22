@@ -1,0 +1,3 @@
+1. scan the input char by char
+2. if the char is a special char, replace it with its text representation
+3. print the text

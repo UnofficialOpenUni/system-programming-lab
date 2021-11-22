@@ -1,0 +1,18 @@
+What i need to write:
+	A program that will print a histogram presenting the frequency of different characters in its input.
+	
+What data do i need:
+	* An array with the size of the total amount of possible characters, which is 127.
+	* I need to save each scanned character in its right possision in the array.
+	* I need to count how many different characters the text contains.
+	* I need to save the value of the most frequent character in a seperate variable.
+	* I need to print only the characters from the array which appeared in the text.
+	* The amount of prints would be: (maxCount*[The length of the array - 127])
+
+The variables ill need would be:
+	* The maximum amount of characters - MAX_CHARS
+	* The array to store char counts - characters[]
+	* The count of different characters - diffChars
+	* The maximum count - maxCount
+	* An index variable for the loops - i
+	* A variable to store the current char - c

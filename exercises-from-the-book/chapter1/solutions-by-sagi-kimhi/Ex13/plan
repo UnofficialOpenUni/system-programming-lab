@@ -1,0 +1,5 @@
+1. make an array with the length of the max amount of words for the histogram and set it to 0.
+2. scan the text, for each character that is not space, tab, or a new line, add a count to the array column.
+3. if a space, tab, or line is encountered, save the maximum length and move on to the next column and start adding counts again, this goes on until reaching the end of the text or the end of the array.
+4. after reaching the EOF or the end of the array, scan the array, and for every number in the array that equals to the max word length value print the char |.
+after reaching the end of the array, start a new line, deduce one count from the max word length and enter the scan-print loop again, that is until the max word length reaches the value of 0.
