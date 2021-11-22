@@ -62,7 +62,7 @@ If you are new to this repository and are using it for the first time, here are 
 	git branch -d name-of-branch-to-be-deleted
 	```
 6. If you wish to upload the changes you've made, you can review your changes using the `git status` command.
-7. To add and commit the new changes use the `git add .` command followed by</br>`git commit -m "A custom message describing the changes"`  and then use the command `git push origin <your branch name>`</br></br>
+7. To add and commit the new changes use the `git add .` command followed by `git commit -m "A custom message describing the changes"`  and then use the command `git push origin <your branch name>`</br></br>
 	```
 	example:
 	git add .
