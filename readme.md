@@ -76,7 +76,7 @@ If you are new to this repository and are using it for the first time, here are 
 ### Keeping your forked repository and your PC files up to date:
 1. Make sure your forked repository is up to date with the original (AKA upstream) repository by simply navigating to the "<> Code" tab on your repository's Github webpage, and click the "Fetch upstream > Fetch and Merge" button.
 2. To update the repository's files saved to your PC, open the Terminal, and navigate to the repository's folder using the `cd` command.
-3. Enter the command `git status` to make sure you are on the main branch of the git repository, otherwise, use the command `git checkout main` to switch back to the main branch.
+3. Enter the command `git status` to make sure you are on the main branch of the git repository, otherwise, use the command</br> `git checkout main` to switch back to the main branch.
 4. Enter the command `git pull origin main` - this will pull all the new changes and will update the files on your PC.
 
 
