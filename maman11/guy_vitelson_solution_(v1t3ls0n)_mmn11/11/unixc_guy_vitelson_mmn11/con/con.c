@@ -37,28 +37,11 @@ typedef enum
     True
 } Bool;
 
-/* @ Function: contract 
-   @ Arguments: str1 is the original string, str2 is a clean string variable that will hold the new minimized string the function will create
-   and length is the length of the original string(str1).
-   @ Desciption: The function takes a string of text and shortens parts of the string that have 3 or more consecutive alphanumeric characters.
-*/
+
 void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length);
-
-/* @ Function: getCharType 
-   @ Arguemnts: The function get one argument that is an integer which represents asciiValue of a char in the original string and returns
-   DigitType typedef variable.
-   @ Desciption : The function checks if the value of its asciiValue argument is a type of  number, lowercase character, uppercase character 
-   or it is not a alphanumeric digit.
-*/
 DigitType getCharType(int asciiValue);
-
 Bool isNextCharFollowingCurrent(int next, int current);
-/* @ Function: isNextCharFollowingCurrent 
-   @ Arguemnts: The functions get 2 integers, first one represent the next character in the origial string we are iterating over in contact
-   and the next one represens the current character we are iterating on in contract.
-   @ Desciption : The function checks the value of the first argument(next) is the consecutive alpha-numeric character 
-   of the value of the second argument (current) and then returns True or False (1 or 0) typedef variable.
-*/
+
 int main()
 {
     char s1[MAX_STR_LENGTH], s2[MAX_STR_LENGTH];
@@ -76,6 +59,13 @@ int main()
     return 0;
 }
 
+
+/* @ Function: getCharType 
+   @ Arguemnts: The function get one argument that is an integer which represents asciiValue of a char in the original string and returns
+   DigitType typedef variable.
+   @ Desciption : The function checks if the value of its asciiValue argument is a type of  number, lowercase character, uppercase character 
+   or it is not a alphanumeric digit.
+*/
 DigitType getCharType(int asciiValue)
 {
     if (islower(asciiValue))
@@ -87,6 +77,13 @@ DigitType getCharType(int asciiValue)
     else
         return NonDigit;
 }
+
+/* @ Function: isNextCharFollowingCurrent 
+   @ Arguemnts: The functions get 2 integers, first one represent the next character in the origial string we are iterating over in contact
+   and the next one represens the current character we are iterating on in contract.
+   @ Desciption : The function checks the value of the first argument(next) is the consecutive alpha-numeric character 
+   of the value of the second argument (current) and then returns True or False (1 or 0) typedef variable.
+*/
 
 Bool isNextCharFollowingCurrent(int next, int current)
 {
@@ -107,6 +104,12 @@ Bool isNextCharFollowingCurrent(int next, int current)
     return areTypesValid && areValuesSequentials;
 }
 
+
+/* @ Function: contract 
+   @ Arguments: str1 is the original string, str2 is a clean string variable that will hold the new minimized string the function will create
+   and length is the length of the original string(str1).
+   @ Desciption: The function takes a string of text and shortens parts of the string that have 3 or more consecutive alphanumeric characters.
+*/
 void contract(char str1[MAX_STR_LENGTH], char str2[MAX_STR_LENGTH], int length)
 {
     int i, k, count = 0, startIndex = 0, endIndex = 0;
