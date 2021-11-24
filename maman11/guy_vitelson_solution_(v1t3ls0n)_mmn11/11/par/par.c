@@ -2,10 +2,10 @@
     par.c
     
     ### Program Description ###
-    The program gets from the use lines of text (that suppose to be c code that contains brackets), the program
-    evaluate of the brackets within each line user enter are valid by the C language syntax, the program then notify
-    the user if the line of code he just entered is valid or not, and in the end of the input (when user exit or input from file if over),
-    the program write if the whole text user have entered is valid (globally) or not.
+    The program gets from the user lines of text (that suppose to be c code that contains brackets), the program
+    evaluate of the brackets within the line user have entered and checks if they are valid by the C language syntax,
+    the program then notify the user if the line of code he just entered is valid or not, and in the end of the input
+     (when user exit or input from file if over), the program write if the whole text user have entered is valid (globally) or not.
     In the global evaluation of the user input at the end of the program, the program will treat special cases of invalid lines single 
     that contained single open or closing curly brackets and whitespace characters only, the program will check if all of those special lines
     of brackets are balanced by checking if for any special line with open curly bracket there is a corresponding special line holding closing curly bracket.
@@ -45,91 +45,15 @@ typedef enum
     False,
     True,
 } Bool;
-
-/* @ Function: isOpeningBracket 
-   @ Arguments: the function gets c argument that is an integer that suppose to hold a value ascii character
-   @ Desciption: The function checks if the value its argument is sort of an opened bracket { [ ( valid in C and return True or False typedef variable
-*/
 Bool isOpeningBracket(int c);
-
-/* @ Function: isClosingBracket
-   @ Arguments: the function gets c argument that is an integer that suppose to hold a value ascii character
-   @ Desciption: The function checks if the value its argument is sort of an closed bracket } ] ) valid in C and return True or False typedef variable
-*/
 Bool isClosingBracket(int c);
-
-/* @ Function: areBracketsOfSameTypeButInverse
-   @ Arguments: the function gets 2 integer arguments, each of them suppose to hold ascii value of a character, the first one 
-   supposed to be a opening bracket of some sort and the second argument supposed to be a closed bracket of some sort.
-   @ Desciption: The function checks if its 2 arguments are brackets of the same type and that the first argument is an opened bracket and 
-   the second argument is the closed version of that bracket.
-*/
 Bool areBracketsOfSameTypeButInverse(int o, int c);
-
-/* @ Function: evalBracketSequence
-   @ Arguments: The function gets 3 argument, first is an array of open brackets characters, the second is an array of closed brackets
-   characters, the third argument is the length of both arrays, the arrays suppose to have the same length.
-   @ Desciption: the function checks whether the brackets in the opened and closed brackets arrays representing a valid sequence of opening
-   and closing brackets sequence of characters in C language. for exampel opened array containing {[( and closed array containing )]} 
-   will return True because the closed brackets array holds the corresponding closed versions of brackets in the right order.
-
-   The way the function work is by the logic that the first character in the opened brackets array will have its corresponding closed version
-   at the end of the closed brackets array, then the next character in the opened array will have its corresponding version in the closed array
-   at the location of 1 character previous to the last character array and so forth.
-
-   The function loops over the 2 arrays, on the closing array it is iterating from end to start and on the opened brackets
-   array it iterates from begining to the end, on every iteration of the while loop it compares if the current brackets on both arrays are
-   the same type of brackets but with reversed direction using the areBracketsOfSameTypeButInverse function the first time
-   a pair of brackets in those arrays do not match the function returns False and end the function.
-*/
 Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LINE_LENGTH / 2], int length);
-
-/* @ Function: evalSingleLine
-   @ Arguments: The function gets 2 argument, first is a string of opening or closing brackets, the second argument is the length of that array.
-   @ Desciption: The function evaluates if the sequence of brackets it gets representing valid sequence of opening and closing brackets in 
-   C language, the function return True or False typedef variables correspondingly.
-*/
 Bool evalSingleLine(char brackets[MAX_LINE_LENGTH], int length);
-
-/* @ Function: handleState
-   * A state is a concept represent our current "mode" in the evalution proccess, we are in different mode of validating
-   brackets on each line depending if we are currently inside a comment or inside a string or inside a multiline comment 
-   or if now we encountered new line character input and we need to evaluate this line now.
-   
-   @ Arguments: The first argument function gets represents the state we are currently in, the next argument (current) represents 
-   the current character value we got from the user input, the next argument (prev) represent the last character input we got from user,
-   the next argument (commentStrCharCount) is a number which represent the number of characters currently been counted inside 
-   a comment expression in caset we are inside a comment.The function returns us the updated value of the state we are in as a typedef
-   State variable .
-   @ Desctiption: The function evaluate what value our current state must have after taking into account our previous state and the last
-   character input we got from the user.
-
-*/
 State handleState(State prevState, int current, int prev, int commentStrCharCount);
-
-/* @ Function: getTextAndAnalyzeFully
-   @ Arguments: the function get not arguments.
-   @ Desctiption: The function start listening to input from user and evaluates brackets in each line of text user entered 
-   the moment the user entering a new line and print the result each time (each line). At the end of the input the function
-   evaluates if the whole text is globally valid or not.
-*/
 void getTextAndAnalyzeFully();
-
-/* @ Function: printCurrentLineResult
-   @ Arguments: the function gets one argument that is of typedef Bool and it represents the validity value (true or false) of the current line.
-   @ Desctiption: The function prints message of valid or not valid to user in a visual nice way. 
-*/
 void printCurrentLineResult(Bool result);
-
-/* @ Function: evalTextGlobally
-   @ Arguments: The first argument needs to represent the global result value we currently have while we still inside
-    getTextAndAnalyzeFully function which we are about to exit now, next argument is the current brackets string we saved
-    from current line, next argument is the last character we got from user input, next 2 arguments are the closed and opened bracket 
-    counts from all special case lines.
-    @ Desctiption: The function evaluate globally if all of users input is valid or not and then prints the result.
-*/
 void evalTextGlobally(Bool lastResult, char bracketsOfLastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount);
-
 int main()
 {
     printf("~ In this program each line of your code will be evaluated seperately,\nand result will show up immediately as you press enter to start a new line.\nAt the end of you input you will see the evaluation result for the whole text you've entered.\nThe global result takes count of special lines with correct open or closed curly braces.\n");
@@ -137,6 +61,14 @@ int main()
     getTextAndAnalyzeFully();
     return 0;
 }
+
+
+/* @ Function: getTextAndAnalyzeFully
+   @ Arguments: the function get not arguments.
+   @ Desctiption: The function start listening to input from user and evaluates brackets in each line of text user entered 
+   the moment the user entering a new line and print the result each time (each line). At the end of the input the function
+   evaluates if the whole text is globally valid or not.
+*/
 void getTextAndAnalyzeFully()
 {
     Bool globalResult = True;
@@ -258,6 +190,14 @@ void getTextAndAnalyzeFully()
     evalTextGlobally(globalResult, brackets, prevChar, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
 }
 
+
+/* @ Function: evalTextGlobally
+   @ Arguments: The first argument needs to represent the global result value we currently have while we still inside
+    getTextAndAnalyzeFully function which we are about to exit now, next argument is the current brackets string we saved
+    from current line, next argument is the last character we got from user input, next 2 arguments are the closed and opened bracket 
+    counts from all special case lines.
+    @ Desctiption: The function evaluate globally if all of users input is valid or not and then prints the result.
+*/
 void evalTextGlobally(Bool lastResult, char bracketsOfLastLine[MAX_LINE_LENGTH], int lastChar, int closedCount, int openCount)
 {
     Bool lastSingleLineResult = True;
@@ -285,6 +225,10 @@ void evalTextGlobally(Bool lastResult, char bracketsOfLastLine[MAX_LINE_LENGTH],
         printf("\n*** Text is Not Globally Valid! ): ***\n\n");
 }
 
+/* @ Function: printCurrentLineResult
+   @ Arguments: the function gets one argument that is of typedef Bool and it represents the validity value (true or false) of the current line.
+   @ Desctiption: The function prints message of valid or not valid to user in a visual nice way. 
+*/
 void printCurrentLineResult(Bool result)
 {
     if (result == True)
@@ -295,6 +239,20 @@ void printCurrentLineResult(Bool result)
     printf("\n##################################################  \n\n\n");
 }
 
+/* @ Function: handleState
+   * A state is a concept represent our current "mode" in the evalution proccess, we are in different mode of validating
+   brackets on each line depending if we are currently inside a comment or inside a string or inside a multiline comment 
+   or if now we encountered new line character input and we need to evaluate this line now.
+   
+   @ Arguments: The first argument function gets represents the state we are currently in, the next argument (current) represents 
+   the current character value we got from the user input, the next argument (prev) represent the last character input we got from user,
+   the next argument (commentStrCharCount) is a number which represent the number of characters currently been counted inside 
+   a comment expression in caset we are inside a comment.The function returns us the updated value of the state we are in as a typedef
+   State variable .
+   @ Desctiption: The function evaluate what value our current state must have after taking into account our previous state and the last
+   character input we got from the user.
+
+*/
 State handleState(State prevState, int current, int prev, int commentStrCharCount)
 {
     State state = prevState;
@@ -375,6 +333,12 @@ State handleState(State prevState, int current, int prev, int commentStrCharCoun
 
     return state;
 }
+
+/* @ Function: evalSingleLine
+   @ Arguments: The function gets 2 argument, first is a string of opening or closing brackets, the second argument is the length of that array.
+   @ Desciption: The function evaluates if the sequence of brackets it gets representing valid sequence of opening and closing brackets in 
+   C language, the function return True or False typedef variables correspondingly.
+*/
 Bool evalSingleLine(char brackets[MAX_LINE_LENGTH], int length)
 {
     int i, j = 0, k = 0, current = 0;
@@ -429,6 +393,24 @@ Bool evalSingleLine(char brackets[MAX_LINE_LENGTH], int length)
         return False;
     return result;
 }
+
+
+/* @ Function: evalBracketSequence
+   @ Arguments: The function gets 3 argument, first is an array of open brackets characters, the second is an array of closed brackets
+   characters, the third argument is the length of both arrays, the arrays suppose to have the same length.
+   @ Desciption: the function checks whether the brackets in the opened and closed brackets arrays representing a valid sequence of opening
+   and closing brackets sequence of characters in C language. for exampel opened array containing {[( and closed array containing )]} 
+   will return True because the closed brackets array holds the corresponding closed versions of brackets in the right order.
+
+   The way the function work is by the logic that the first character in the opened brackets array will have its corresponding closed version
+   at the end of the closed brackets array, then the next character in the opened array will have its corresponding version in the closed array
+   at the location of 1 character previous to the last character array and so forth.
+
+   The function loops over the 2 arrays, on the closing array it is iterating from end to start and on the opened brackets
+   array it iterates from begining to the end, on every iteration of the while loop it compares if the current brackets on both arrays are
+   the same type of brackets but with reversed direction using the areBracketsOfSameTypeButInverse function the first time
+   a pair of brackets in those arrays do not match the function returns False and end the function.
+*/
 Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LINE_LENGTH / 2], int length)
 {
 
@@ -445,6 +427,14 @@ Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LIN
     }
     return result;
 }
+
+
+/* @ Function: areBracketsOfSameTypeButInverse
+   @ Arguments: the function gets 2 integer arguments, each of them suppose to hold ascii value of a character, the first one 
+   supposed to be a opening bracket of some sort and the second argument supposed to be a closed bracket of some sort.
+   @ Desciption: The function checks if its 2 arguments are brackets of the same type and that the first argument is an opened bracket and 
+   the second argument is the closed version of that bracket.
+*/
 Bool areBracketsOfSameTypeButInverse(int o, int c)
 {
     if (o == ASCII_OPENING_SQUARE_BRACKETS && c == ASCII_CLOSING_SQUARE_BRACKETS)
@@ -456,10 +446,19 @@ Bool areBracketsOfSameTypeButInverse(int o, int c)
     else
         return False;
 }
+
+/* @ Function: isClosingBracket
+   @ Arguments: the function gets c argument that is an integer that suppose to hold a value ascii character
+   @ Desciption: The function checks if the value its argument is sort of an closed bracket } ] ) valid in C and return True or False typedef variable
+*/
 Bool isClosingBracket(int c)
 {
     return (c == ASCII_CLOSING_SQUARE_BRACKETS || c == ASCII_CLOSING_CURLY_BRACES || c == ASCII_CLOSING_ROUND_BRACKETS) ? True : False;
 }
+/* @ Function: isOpeningBracket 
+   @ Arguments: the function gets c argument that is an integer that suppose to hold a value ascii character
+   @ Desciption: The function checks if the value its argument is sort of an opened bracket { [ ( valid in C and return True or False typedef variable
+*/
 Bool isOpeningBracket(int c)
 {
     return (c == ASCII_OPENING_SQUARE_BRACKETS || c == ASCII_OPENING_CURLY_BRACES || c == ASCII_OPENING_ROUND_BRACKETS) ? True : False;
