@@ -7,7 +7,7 @@
 #include <string.h>
 #include <limits.h>
 
-#define N 5
+#define N 3
 #define MAX_MEMBERS ((N)*(N))
 #define CONSTANT_SUM ((N) * (MAX_MEMBERS + 1)/2)
 #define IsConstSum(sum) ((sum) == CONSTANT_SUM)
@@ -72,6 +72,8 @@ int getInt(int *pn);
 InputFlag setSquare(Square square);
 void setSquareSums(SquareSums *sums, Square square);
 void resetSums(SquareSums *sums);
+int updateMemTable(MagicSquare *magicSquare, MemTable tab);
+int resetMemTable(MemTable table);
 int addToTable(int val, MemTable tab);
 int removeFromTable(int val, MemTable tab);
 
@@ -81,7 +83,7 @@ int removeFromTable(int val, MemTable tab);
 MagicSquareFlag isMagicSquare(MagicSquare *magicSquare);
 int validMagicMembers(MemTable tab);
 int validMagicSums(SquareSums sums);
-int updateMemTable(MagicSquare *magicSquare, MemTable tab);
+
 int memLookup(int val, MemTable tab);
 
 /****************************************************
@@ -91,3 +93,4 @@ void printUserIntroMessage(void);
 void printSquare(Square square);
 void printSquareType(MagicSquareFlag flag);
 void printInputError(InputFlag inputFlag);
+void printProgramFailureMsg(void);

@@ -2,13 +2,14 @@
 ******************************** Hello And Welcome! ********************************
 This program checks whether or not a square is a basic magic square
 In order to continue, please provide 25 integers representing your square
-from left to right order, where the first integer is the integer on the first row and column
-and the last integer is the integer on the last row and column.
+from left to right order, where the first integer is the integer on the first row
+and column and the last integer is the integer on the last row and column.
 You can enter your values in any way you'd like to, each value in a seperate row,
 all values on the same row, or any other way.
 
 In order to begin the validation, please provide the values...
 *************************************************************************************
 
-Error! You did not provide the program with enough values!
-Please make sure you are providing exactly 25 values next time!
+Error: You did not provide enough values.
+Please make sure you are providing exactly 25 values!
+

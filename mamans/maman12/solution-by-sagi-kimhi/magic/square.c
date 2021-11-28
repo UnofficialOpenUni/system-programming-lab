@@ -61,8 +61,8 @@ InputFlag setSquare(Square square)
 	return setSquareRec(square, 0, 0, 0);
 }
 
-/*	resetSums: sets all the members of the pointed to SquareSums structure  to 0.
-	No operation will occure for a null pointer. */
+/*	resetSums: sets all the members of the pointed to SquareSums structure to 0.
+	No operation will occure for a null pointer argument. */
 void resetSums(SquareSums *sums)
 {
 	if (sums != NULL) {
@@ -96,17 +96,19 @@ static InputFlag setSquareRec(Square square, int row,  int col, int count)
 {
 	int member, c;
 
-	if ((c = getInt(&member))) {
+	if ((c = getInt(&member))) { /* saves the returned char and checks if an int was succesfully fetched */
 		if (count++ >= MAX_MEMBERS) 
 				return VALUE_OVERFLOW;
-		if (col >= N) {
+		if (col >= N) {	
 			col = 0;
 			row++;
 		}
 		square[row][col] = member;
-		return (c == EOF) ? (count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW:
-		setSquareRec(square, row, ++col, count);
+		if (c == EOF)
+			return (count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW;
+		return setSquareRec(square, row, col+1, count); /* recursive call - set the next column */
 	}
-	return ((c = getchar()) == EOF) ? (count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW:
-	INVALID_INPUT_VALUE;
+	return ((c = getchar()) != EOF) ? INVALID_INPUT_VALUE: /* getchar() since getInt pushes back nondigit chars with ungetc */
+	(count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW;
+	
 }
