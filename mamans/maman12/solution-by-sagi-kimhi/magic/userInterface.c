@@ -1,12 +1,9 @@
 /*
 *	This source file contains all the user interaction related functions including
 *	handling of output - printing an intro message, a matrix, error messages, etc.
-*	and also some handling of input - the getInt function which converts a set of
-*	characters from the input representing an integer - into an actual integer value.
+*	
 */
 #include "magic.h"
-
-#define CharToDigit(c) ((c) - '0')
 
 /* printUserIntroMessage: prints a detailed user introduction message to the program. */
 void printUserIntroMessage(void)
@@ -78,31 +75,4 @@ void printProgramFailureMsg(void)
 	printf("magicMember hash-table structure.\n");
 	printf("We sincerely appologize for the inconvenience, please report this error to get further\n");
 	printf("help and find a possible fix to the problem...\t:-(\n\n");
-}
-
-/* 	getInt: gets an integer from a string of input and converts it to an actual int type and saves
-	the converted value into the pointer argument. 
-	Returns the latest non digit character encountered upon success, or 0 upon failure.
-	Either way, the latest nondigit charcter is pushed back to the input by the ungetc function. */
-int getInt(int *pn)
-{
-    int c, sign;
-    while (isspace(c=getchar()))	/* skips spaces */
-		;
-    if (!isdigit(c) && c != '-' && c != '+' && c != EOF) {
-        ungetc(c, stdin);
-		return 0;
-    }
-    sign = (c == '-') ? -1: 1;	/* sets the aprropriate sign of the int */
-    if (c == '+' || c == '-')
-        c = getchar();
-    if (isdigit(c)) 
-        for (*pn = 0; isdigit(c); c = getchar())
-            *pn = 10 * *pn + CharToDigit(c);		/* The convertion operation */
-    else {
-		ungetc(c, stdin);	
-		return 0;
-    }
-    *pn *= sign;
-    return ungetc(c, stdin);
 }

@@ -1,7 +1,5 @@
 #include "magic.h"
 
-static InputFlag setSquareRec(Square square, int row,  int col, int count);
-
 /****************************************************
 *					GET FUNCTIONS:					*
 ****************************************************/
@@ -54,11 +52,29 @@ int getRightDiagSum(Square square)
 /****************************************************
 *					SET FUNCTIONS:					*
 ****************************************************/
+static InputFlag setSquareRec(Square square, int row,  int col, int count);
+
 /*	setSquare: Reads integers from the input and sets them as members of the square
 	in left to right order, and returns the aprropriate InputFlag on success/failure */
 InputFlag setSquare(Square square)
 {
 	return setSquareRec(square, 0, 0, 0);
+}
+
+/*	setSquareSums: Calcualtes and sets all the sums of the pointed to SquareSums struct to the
+	aprropriate sums of the square given as argument. No operation will occure for a null pointer. */
+void setSquareSums(SquareSums *sums, Square square)
+{
+	if (sums != NULL) {
+		int i;
+		resetSums(sums);
+		for (i = 0; i < N; i++) {
+			sums->rowSum[i] = getRowSum(square, i);
+			sums->colSum[i] = getColSum(square, i);
+		}
+		sums->leftDiagonal = getLeftDiagSum(square);
+		sums->rightDiagonal = getRightDiagSum(square);
+	}
 }
 
 /*	resetSums: sets all the members of the pointed to SquareSums structure to 0.
@@ -72,21 +88,6 @@ void resetSums(SquareSums *sums)
 	}
 }
 
-/*	setSquareSums: Calcualtes and sets all the sums of the pointed to SquareSums struct to the
-	aprropriate sums of the square given as argument. No operation will occure for a null pointer. */
-void setSquareSums(SquareSums *sums, Square square)
-{
-	if (sums != NULL) {
-		int i;
-		for (i = 0; i < N; i++) {
-			sums->rowSum[i] = getRowSum(square, i);
-			sums->colSum[i] = getColSum(square, i);
-		}
-		sums->leftDiagonal = getLeftDiagSum(square);
-		sums->rightDiagonal = getRightDiagSum(square);
-	}
-}
-
 /****************************************************
 *				STATIC FUNCTIONS:					*
 ****************************************************/
@@ -94,9 +95,8 @@ void setSquareSums(SquareSums *sums, Square square)
 	returns an aprropriate InputFlag type for both success or failure. */
 static InputFlag setSquareRec(Square square, int row,  int col, int count)
 {
-	int member, c;
-
-	if ((c = getInt(&member))) { /* saves the returned char and checks if an int was succesfully fetched */
+	int member;
+	if (scanf("%d", &member) == 1) { /* saves the returned char and checks if an int was succesfully fetched */
 		if (count++ >= MAX_MEMBERS) 
 				return VALUE_OVERFLOW;
 		if (col >= N) {	
@@ -104,11 +104,9 @@ static InputFlag setSquareRec(Square square, int row,  int col, int count)
 			row++;
 		}
 		square[row][col] = member;
-		if (c == EOF)
-			return (count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW;
-		return setSquareRec(square, row, col+1, count); /* recursive call - set the next column */
+		return (!feof(stdin)) ? setSquareRec(square, row, col+1, count): /* recursive call - set the next column */
+		(count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW;
 	}
-	return ((c = getchar()) != EOF) ? INVALID_INPUT_VALUE: /* getchar() since getInt pushes back nondigit chars with ungetc */
+	return (!feof(stdin)) ? INVALID_INPUT_VALUE:
 	(count == MAX_MEMBERS) ? VALID_INPUT: VALUE_UNDERFLOW;
-	
 }

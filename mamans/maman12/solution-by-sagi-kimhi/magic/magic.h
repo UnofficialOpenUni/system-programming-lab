@@ -7,7 +7,7 @@
 #include <string.h>
 #include <limits.h>
 
-#define N 3
+#define N 5
 #define MAX_MEMBERS ((N)*(N))
 #define CONSTANT_SUM ((N) * (MAX_MEMBERS + 1)/2)
 #define IsConstSum(sum) ((sum) == CONSTANT_SUM)
@@ -15,7 +15,7 @@
 #define FAILURE -1
 
 /****************************************************
-*					TYPEDEFS :					*
+*					TYPEDEFS :						*
 ****************************************************/
 typedef enum InputFlags { 
 	INVALID_INPUT_VALUE = INT_MIN, 
@@ -25,7 +25,7 @@ typedef enum InputFlags {
 } InputFlag;
 
 typedef enum magicSquareFlags { 
-	STANDARD_SQUARE = 0,
+	STANDARD_SQUARE,
 	BASIC_MAGIC_SQUARE
 } MagicSquareFlag;
 
@@ -41,7 +41,7 @@ typedef struct squareSums {
 typedef struct magicMember {
 	int value;
 	unsigned int count;
-} Member, *MemTable;
+} MagicMember, MemTable[MAX_MEMBERS];
 
 typedef struct basicMagicSquare {
 	Square square;
@@ -49,33 +49,28 @@ typedef struct basicMagicSquare {
 	MemTable memberTable;
 } MagicSquare;
 
-/****************************************************
-*				DE/CONSTRUCTOR FUNCTIONS :			*
-****************************************************/
-MagicSquare *newMagicSquare(void);
-Member *newMemTable(void);
 
 /****************************************************
 *					GET FUNCTIONS :					*
 ****************************************************/
-MagicSquareFlag getNewMagicSquare(void);
+int getNewMagicSquare(MagicSquareFlag *squareFlag);
 int getRowSum(Square square, int row);
 int getColSum(Square square, int col);
-int getLeftDiagSum(Square square);
 int getRightDiagSum(Square square);
+int getLeftDiagSum(Square square);
+int memLookup(int val, MemTable tab);
 int getKey(int val);
-int getInt(int *pn);
 
 /****************************************************
 *					SET FUNCTIONS :					*
 ****************************************************/
 InputFlag setSquare(Square square);
+int setMemTable(MagicSquare *magicSquare, MemTable tab);
+int removeFromTable(int val, MemTable tab);
+int addToTable(int val, MemTable tab);
+void resetMemTable(MemTable table);
 void setSquareSums(SquareSums *sums, Square square);
 void resetSums(SquareSums *sums);
-int updateMemTable(MagicSquare *magicSquare, MemTable tab);
-int resetMemTable(MemTable table);
-int addToTable(int val, MemTable tab);
-int removeFromTable(int val, MemTable tab);
 
 /****************************************************
 *				VALIDATION FUNCTIONS :				*
@@ -83,8 +78,6 @@ int removeFromTable(int val, MemTable tab);
 MagicSquareFlag isMagicSquare(MagicSquare *magicSquare);
 int validMagicMembers(MemTable tab);
 int validMagicSums(SquareSums sums);
-
-int memLookup(int val, MemTable tab);
 
 /****************************************************
 *					USER INTERFACE :				*
