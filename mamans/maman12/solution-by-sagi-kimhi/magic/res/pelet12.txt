@@ -11,17 +11,13 @@ In order to begin the validation, please provide the values...
 *************************************************************************************
 
 
-|      17	      24	       1	       8	      15	|
+|    17   24   1    8    15   |
+|    23   5    7    14   16   |
+|    4    6    -13  20   22   |
+|    10   12   19   21   3    |
+|    11   18   25   2    9    |
 
-|      23	       5	       7	      14	      16	|
-
-|       4	       6	     -13	      20	      22	|
-
-|      10	      12	      19	      21	       3	|
-
-|      11	      18	      25	       2	       9	|
-
-
-Well it is a square...
-But it sure ain't a magical one... You may want to reconsider your input :-)
-
+Well, it is a square... But it sure ain't a magical one...
+This is due to the following reasons:
+	* You have provided a value that is not within the scope of {1...N^2}.
+	* The individual sums of rows, columns, and diagonals are not all equal to 65.

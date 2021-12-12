@@ -1,9 +1,10 @@
 /*
 *	This source file contains all the user interaction related functions including
 *	handling of output - printing an intro message, a matrix, error messages, etc.
-*	
+*	and also some handling of input - the getInt function which converts a set of
+*	characters from the input representing an integer - into an actual integer value.
 */
-#include "magic.h"
+#include "../magic.h"
 
 /* printUserIntroMessage: prints a detailed user introduction message to the program. */
 void printUserIntroMessage(void)
@@ -25,54 +26,46 @@ void printSquare(Square square)
 	int row, col;
 	printf("\n");
 	for (row = 0; row < N; row++) {
-		printf("|");
+		printf("%-5c", '|');
 		for (col = 0; col < N; col++)
-			printf("%8d\t", square[row][col]);
-		printf("|\n\n");
+			printf("%-5d", square[row][col]);
+		printf("%-c\n", '|');
 	}
 	printf("\n");
 }
 
-/* printSquareType: prints whether or not a square is a basic magic square - based on the argument */
-void printSquareType(MagicSquareFlag flag)
+/* printIfMagic: prints out a friendly message announcing a magic square */
+void printIfMagic(int isMagic, MagicFlag flag)
 {
-	if (flag == BASIC_MAGIC_SQUARE)
+	if (isMagic)
 		printf("Congrats!\nThis square is a basic magic square with a constant sum of: %d\n\n", CONSTANT_SUM);
 	else {
-		printf("Well it is a square...\nBut it sure ain't a magical one... ");
-		printf("You may want to reconsider your input :-)\n\n");
+		printf("Well, it is a square... But it sure ain't a magical one...\n");
+		printf("This is due to the following reasons:\n");
+		if (flag._invalid_magic_member)
+			printf("\t* You have provided a value that is not within the scope of {1...N^2}.\n");
+		if (flag._multiple_member_appearances)
+			printf("\t* Some values (1 or more) have multiple appearances.\n");
+		if (flag._invalid_magic_sums)
+			printf("\t* The individual sums of rows, columns, and diagonals are not all equal to %d.\n", CONSTANT_SUM);
 	}
 }
 
 /* printInputError: prints an appropriate error message based on the InputFlag argument */
-void printInputError(InputFlag inFlag)
+void printInputError(InputFlag flag)
 {
-	switch (inFlag) {
+	switch (flag) {
 	case INVALID_INPUT_VALUE:
-		printf("Error: an incorrect input type was recieved.\nPlease use integers only!\n\n");
+		printf("\nError: an incorrect input type was recieved.\nPlease use integers only!\n\n");
 		break;
 	case VALUE_OVERFLOW:
-		printf("Error: Too many values were entered.\nPlease enter exactly %d values!\n\n", MAX_MEMBERS);
+		printf("\nError: Too many values were entered.\nPlease enter exactly %d values!\n\n", MAX_MEMBERS);
 		break;
 	case VALUE_UNDERFLOW:
-		printf("Error: You did not provide enough values.\n");
+		printf("\nError: You did not provide enough values.\n");
 		printf("Please make sure you are providing exactly %d values!\n\n", MAX_MEMBERS);
 		break;
 	default:
 		break;
 	}
-}
-
-/* 	printProgramFailureMsg: prints a general program error message describing a failure 
-	in the program and what could have caused the failure - this failure is not input related  */
-void printProgramFailureMsg(void)
-{
-	printf("Error: the program has failed due to an unknown reason.\n");
-	printf("This is non-related to the user's input and is usually caused due to:\n");
-	printf("\t- A change done to the main function - misusing a function.\n");
-	printf("\t- A null pointer argument sent to one of the functions.\n");
-	printf("\t- Not enough space available to construct a new MagicSquare or");
-	printf("magicMember hash-table structure.\n");
-	printf("We sincerely appologize for the inconvenience, please report this error to get further\n");
-	printf("help and find a possible fix to the problem...\t:-(\n\n");
 }

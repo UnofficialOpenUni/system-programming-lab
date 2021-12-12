@@ -6,28 +6,30 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdarg.h>
 
 #define N 5
 #define MAX_MEMBERS ((N)*(N))
 #define CONSTANT_SUM ((N) * (MAX_MEMBERS + 1)/2)
-#define IsConstSum(sum) ((sum) == CONSTANT_SUM)
-#define ValidMagicMember(x) ((x) > 0 && (x) <= MAX_MEMBERS)
+#define IsConstSum(SUM) ((SUM) == CONSTANT_SUM)
+#define ValidMagicMember(X) ((X) > 0 && (X) <= MAX_MEMBERS)
 #define FAILURE -1
 
 /****************************************************
 *					TYPEDEFS :						*
 ****************************************************/
-typedef enum InputFlags { 
-	INVALID_INPUT_VALUE = INT_MIN, 
+typedef enum _InputFlags { 
+	VALID_INPUT = 1,
+	INVALID_INPUT_VALUE, 
 	VALUE_OVERFLOW, 
-	VALUE_UNDERFLOW, 
-	VALID_INPUT = 1
+	VALUE_UNDERFLOW
 } InputFlag;
 
-typedef enum magicSquareFlags { 
-	STANDARD_SQUARE,
-	BASIC_MAGIC_SQUARE
-} MagicSquareFlag;
+typedef struct _MagicFlags {
+	unsigned int _multiple_member_appearances: 1;
+	unsigned int _invalid_magic_member: 1;
+	unsigned int _invalid_magic_sums: 1;
+} MagicFlag;
 
 typedef int Square[N][N];
 
@@ -41,49 +43,42 @@ typedef struct squareSums {
 typedef struct magicMember {
 	int value;
 	unsigned int count;
-} MagicMember, MemTable[MAX_MEMBERS];
-
-typedef struct basicMagicSquare {
-	Square square;
-	SquareSums sums;
-	MemTable memberTable;
-} MagicSquare;
+} Member, MemTable[MAX_MEMBERS];
 
 
 /****************************************************
 *					GET FUNCTIONS :					*
 ****************************************************/
-int getNewMagicSquare(MagicSquareFlag *squareFlag);
+int getNewMagicSquare(void);
 int getRowSum(Square square, int row);
 int getColSum(Square square, int col);
-int getRightDiagSum(Square square);
 int getLeftDiagSum(Square square);
-int memLookup(int val, MemTable tab);
+int getRightDiagSum(Square square);
+int getMemCount(int val, MemTable tab);
 int getKey(int val);
 
 /****************************************************
 *					SET FUNCTIONS :					*
 ****************************************************/
-InputFlag setSquare(Square square);
-int setMemTable(MagicSquare *magicSquare, MemTable tab);
+int setSquare(Square square);
+int setMemTable(Square square, MemTable tab);
 int removeFromTable(int val, MemTable tab);
 int addToTable(int val, MemTable tab);
 void resetMemTable(MemTable table);
-void setSquareSums(SquareSums *sums, Square square);
+void setSquareSums(Square square, SquareSums *sums);
 void resetSums(SquareSums *sums);
 
 /****************************************************
 *				VALIDATION FUNCTIONS :				*
 ****************************************************/
-MagicSquareFlag isMagicSquare(MagicSquare *magicSquare);
+int isMagicSquare(Square square, MagicFlag *flags);
 int validMagicMembers(MemTable tab);
-int validMagicSums(SquareSums sums);
+int validMagicSums(Square square);
 
 /****************************************************
 *					USER INTERFACE :				*
 ****************************************************/
 void printUserIntroMessage(void);
 void printSquare(Square square);
-void printSquareType(MagicSquareFlag flag);
+void printIfMagic(int isMagic, MagicFlag flag);
 void printInputError(InputFlag inputFlag);
-void printProgramFailureMsg(void);

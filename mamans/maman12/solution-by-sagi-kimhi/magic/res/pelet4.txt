@@ -10,6 +10,7 @@ all values on the same row, or any other way.
 In order to begin the validation, please provide the values...
 *************************************************************************************
 
+
 Error: You did not provide enough values.
 Please make sure you are providing exactly 25 values!
 

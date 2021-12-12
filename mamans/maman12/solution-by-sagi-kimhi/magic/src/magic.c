@@ -27,15 +27,13 @@
 *	Written by: Sagi Kimhi
 *	Date: 27/11/21
 */
-#include "magic.h"
+#include "../magic.h"
 
 
-int main(int argc, char  *argv[])
+int main(int argc, char *argv[])
 {
-	MagicSquareFlag squareFlag;
 	printUserIntroMessage();
-	if (getNewMagicSquare(&squareFlag)) /* scans, prints and validates a square */
-		printSquareType(squareFlag);
+	getNewMagicSquare();
 	
 	return 0;
 }
@@ -43,38 +41,35 @@ int main(int argc, char  *argv[])
 /****************************************************
 *					GET FUNCTIONS:					*
 ****************************************************/
-/*	getNewMagicSquare: Creates, fills and prints a square from an input of integers.
-	returns a MagicSquareFlag upon success, or the FAILURE constant upon failure.
-	an aprropriate message is printed upon failure, describing the reason. */
-int getNewMagicSquare(MagicSquareFlag *squareFlag)
+/*	getNewMagicSquare: Creates, a square from an input of integers, prints it,
+	and validates whether or not it's a basic magic square. */
+int getNewMagicSquare(void)
 {
-	MagicSquare magicSquare;
-	InputFlag inputFlag = setSquare(magicSquare.square);
-
-	if (inputFlag == VALID_INPUT) {
-		printSquare(magicSquare.square);
-		*squareFlag = isMagicSquare(&magicSquare);
-		return 1;
-	}
-	printInputError(inputFlag);		/* print user input related error message */
-	return 0;
+	Square magicSquare;
+	MagicFlag flag;
+	setSquare(magicSquare);
+	printSquare(magicSquare);
+	memset(&flag, 0, sizeof(MagicFlag));
+	printIfMagic(isMagicSquare(magicSquare, &flag), flag);
+	return 1;
 }
 
 /****************************************************
 *				VALIDATION FUNCTIONS:				*
 ****************************************************/
-/*	isMagicSquare: Validates whther or not a pointer to a MagicSquare struct points to a valid
-	magic square and returns the aprropriate MagicSquareFlag. Returns FAILURE for a null pointer. */
-MagicSquareFlag isMagicSquare(MagicSquare *magicSquare)
+/*	isMagicSquare: Validates whther or not a square is a basic magic square.
+	returns 1 if it is, otherwise, toggles the appropriate MagicFlags and returns 0 */
+int isMagicSquare(Square square, MagicFlag *flag)
 {
-	if (!setMemTable(magicSquare, magicSquare->memberTable)) 
-		return STANDARD_SQUARE;
-	if(validMagicMembers(magicSquare->memberTable)) {
-		setSquareSums(&magicSquare->sums, magicSquare->square);
-		if (validMagicSums(magicSquare->sums))
-			return BASIC_MAGIC_SQUARE;
+	MemTable magicMemberTable;
+	unsigned int result = 0;
+	if ((result |= flag->_invalid_magic_member = !setMemTable(square, magicMemberTable))) {
+		flag->_invalid_magic_sums = !validMagicSums(square);
+		return 0;
 	}
-	return STANDARD_SQUARE;
+	result |= (flag->_multiple_member_appearances = !validMagicMembers(magicMemberTable));
+	result |= (flag->_invalid_magic_sums = !validMagicSums(square));
+	return (!result);
 }
 
 /*	validMagicMembers: Validates whether or not a pointer to a magicMember hash table
@@ -83,16 +78,18 @@ int validMagicMembers(MemTable table)
 {
 	int magicMember;
 	for (magicMember = 1; ValidMagicMember(magicMember); magicMember++)
-		if (memLookup(magicMember, table) != 1)
+		if (getMemCount(magicMember, table) != 1)
 			return 0;
 	return 1;
 }
 
 /*	validMagicSums: returns 1 if the members of the SquareSum struct contain valid magic square
 	sums, otherwise, returns 0. */
-int validMagicSums(SquareSums sums)
+int validMagicSums(Square square)
 {
 	int ind = 0;
+	SquareSums sums;
+	setSquareSums(square, &sums);
 	while (ind++ < N)
 		if (!IsConstSum(sums.colSum[ind]) || !IsConstSum(sums.rowSum[ind]))
 			return 0;
@@ -100,22 +97,23 @@ int validMagicSums(SquareSums sums)
 }
 
 /****************************************************
-*					TABLE FUNCTIONS:				*
+*				HASH TABLE FUNCTIONS:				*
 ****************************************************/
 /* 	updateMemTable: Updates the count of the MemTable's members in accordance to the
 	values set in the magicSquare's square's matrix. Returns 1 on success or FAILURE upon failure. 
 	Use the resetMemTable function upfront if the table was not previously reset. */
-int setMemTable(MagicSquare *magicSquare, MemTable table)
+int setMemTable(Square square, MemTable table)
 {
 	int row, col;
 	resetMemTable(table);
 	for (row = 0; row < N; row++)
 		for (col = 0; col < N; col++)
-			if (addToTable(magicSquare->square[row][col], table) == FAILURE)
+			if (addToTable(square[row][col], table) == FAILURE)
 				return 0;
 	return 1;
 }
-/*	resetMemTable: sets the member values of a MemTable to 1...N^2 and their count to 0. */
+/*	resetMemTable: sets the member values of a MemTable to 1...N^2 and their count to 0.
+	No operation occures, and FAILURE is returned for a null MemTable argument. */
 void resetMemTable(MemTable table)
 {
 	int member;
@@ -129,7 +127,7 @@ void resetMemTable(MemTable table)
 	Returns FAILURE upon failure. */
 int addToTable(int val, MemTable table)
 {
-	if (memLookup(val, table) != FAILURE)
+	if (getMemCount(val, table) != FAILURE)
 		return ++table[getKey(val)].count;
 	return FAILURE;
 }
@@ -138,17 +136,17 @@ int addToTable(int val, MemTable table)
 	magicMember and returns it. Returns FAILURE upon failure. */
 int removeFromTable(int val, MemTable table)
 {
-	if (memLookup(val, table) > 0) 
+	if (getMemCount(val, table) > 0) 
 		return --table[getKey(val)].count;
 	return FAILURE;
 }
 
-/* 	memLookup: Returns the count of the MemTable's magicMember with the value sent as argument. 
+/* 	getMemCount: Returns the count of the MemTable's magicMember with the value sent as argument. 
 	Returns FAILURE for a null pointer or for an invalid magicMember value argument. */
-int memLookup(int val, MemTable table)
+int getMemCount(int val, MemTable table)
 {
 	int ind;
-	if ((ind = getKey(val)) != FAILURE)
+	if (table != NULL && (ind = getKey(val)) != FAILURE)
 		return table[ind].count;
 	return FAILURE;
 }
