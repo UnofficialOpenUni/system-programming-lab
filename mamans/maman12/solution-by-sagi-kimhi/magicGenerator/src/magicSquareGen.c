@@ -1,4 +1,6 @@
-#include "../../magic/magic.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int genMagicSquare(void);
 int genOddMagic(int **matrix, int row, int col, int curr, int lim);
