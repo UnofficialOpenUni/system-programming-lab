@@ -27,7 +27,6 @@ typedef enum
 } Failure;
 
 int parseInput(int matrix[N][N]);
-int parseInputScanf(int matrix[N][N]);
 Bool verify(int c);
 Bool isBasicMagicBox(int matrix[N][N]);
 Bool handleInputError(Error err);
