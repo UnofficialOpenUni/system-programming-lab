@@ -6,6 +6,8 @@
 */
 #include "../magic.h"
 
+#define CharToDigit(c) ((c) - '0')
+
 /* printUserIntroMessage: prints a detailed user introduction message to the program. */
 void printUserIntroMessage(void)
 {
@@ -20,7 +22,7 @@ void printUserIntroMessage(void)
 	printf("*************************************************************************************\n\n");
 }
 
-/* printSquare: prints a pretty matrix representation of the Square argument */
+/* printSquare: prints a pretty Square representation */
 void printSquare(Square square)
 {
 	int row, col;
@@ -31,30 +33,34 @@ void printSquare(Square square)
 			printf("%-5d", square[row][col]);
 		printf("%-c\n", '|');
 	}
-	printf("\n");
+	printf("\n\n");
 }
 
 /* printIfMagic: prints out a friendly message announcing a magic square */
-void printIfMagic(int isMagic, MagicFlag flag)
+void printIfMagic(uint8_t _magicFlag)
 {
-	if (isMagic)
+	if (!_magicFlag)
 		printf("Congrats!\nThis square is a basic magic square with a constant sum of: %d\n\n", CONSTANT_SUM);
 	else {
 		printf("Well, it is a square... But it sure ain't a magical one...\n");
 		printf("This is due to the following reasons:\n");
-		if (flag._invalid_magic_member)
-			printf("\t* You have provided a value that is not within the scope of {1...N^2}.\n");
-		if (flag._multiple_member_appearances)
-			printf("\t* Some values (1 or more) have multiple appearances.\n");
-		if (flag._invalid_magic_sums)
-			printf("\t* The individual sums of rows, columns, and diagonals are not all equal to %d.\n", CONSTANT_SUM);
+		if (_magicFlag & INVALID_MAGIC_MEMBER)
+			printf("\t# You have provided a value that is not within the scope of {1...N^2}.\n");
+		if (_magicFlag & MULTI_MEMBER_APPEARANCE)
+			printf("\t# Some values (1 or more) have multiple appearances.\n");
+		if (_magicFlag & INVALID_MAGIC_LINEAR_SUM)
+			printf("\t# The square has one or more rows/columns with an invalid sum.\n \
+		all sums should be equal to: %d.\n", CONSTANT_SUM);
+		if (_magicFlag & INVALID_MAGIC_DIAGONAL_SUM)
+			printf("\t# The square has one or more diagonals with an invalid sum.\n \
+		all sums should be equal to: %d.\n", CONSTANT_SUM);
 	}
 }
 
 /* printInputError: prints an appropriate error message based on the InputFlag argument */
-void printInputError(InputFlag flag)
+void printInputError(InputFlag inFlag)
 {
-	switch (flag) {
+	switch (inFlag) {
 	case INVALID_INPUT_VALUE:
 		printf("\nError: an incorrect input type was recieved.\nPlease use integers only!\n\n");
 		break;

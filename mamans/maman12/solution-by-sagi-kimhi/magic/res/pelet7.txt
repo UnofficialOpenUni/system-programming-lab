@@ -17,7 +17,11 @@ In order to begin the validation, please provide the values...
 |    10   12   19   21   3    |
 |    11   18   25   2    -9   |
 
+
 Well, it is a square... But it sure ain't a magical one...
 This is due to the following reasons:
-	* You have provided a value that is not within the scope of {1...N^2}.
-	* The individual sums of rows, columns, and diagonals are not all equal to 65.
+	# You have provided a value that is not within the scope of {1...N^2}.
+	# The square has one or more rows/columns with an invalid sum.
+ 		all sums should be equal to: 65.
+	# The square has one or more diagonals with an invalid sum.
+ 		all sums should be equal to: 65.

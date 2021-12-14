@@ -52,20 +52,6 @@ int getRightDiagSum(Square square)
 /****************************************************
 *					SET FUNCTIONS:					*
 ****************************************************/
-/*	setSquareRec: A static recursive function to be used by setSquare(Square) */
-static InputFlag setSquareRec(Square square, int row,  int col, int count);
-
-/*	setSquare: Reads integers from the input and sets them as members of the square
-	in left to right order, and returns the aprropriate InputFlag on success/failure */
-int setSquare(Square square)
-{
-	InputFlag flag = setSquareRec(square, 0, 0, 0);
-	if (flag == VALID_INPUT) 
-		return flag;
-	printInputError(flag);	/* print user input related error message */
-	exit(flag);
-}
-
 /*	setSquareSums: Calcualtes and sets all the sums of the pointed to SquareSums struct to the
 	aprropriate sums of the square given as argument. No operation will occure for a null pointer. */
 void setSquareSums(Square square, SquareSums *sums)
@@ -93,6 +79,18 @@ void resetSums(SquareSums *sums)
 	}
 }
 
+static InputFlag setSquareRec(Square square, int row,  int col, int count);
+
+/*	setSquare: Reads integers from the input and sets them as members of the square
+	in left to right order, and returns the aprropriate InputFlag on success/failure */
+int setSquare(Square square)
+{
+	InputFlag flag = setSquareRec(square, 0, 0, 0);
+	if (flag == VALID_INPUT) 
+		return flag;
+	printInputError(flag);	/* print user input related error message */
+	exit(flag);
+}
 /****************************************************
 *				STATIC FUNCTIONS:					*
 ****************************************************/
