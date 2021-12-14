@@ -1,27 +1,29 @@
 /*	
 *	This is a basic magic square validation program.
 *	The program scans integers from a given input in a left to right order.
-*	These will be set as the members of a square matrix to be tested as a magic square, 
+*	These will be set as the members of a square matrix to be validated as a basic magic square, 
 *	The integers in the input should be passed by the order of the desired matrice's rows,
 *	in a left to right order, where each of the integers are seperated from one another
-*	by one or more whitespace characters. The scan stops when EOF is reached.
+*	by one or more whitespace characters, or a + or - sign, followed by the next integer.
+*	The scan stops when EOF is reached.
 *	
 *	If the input contains an invalid number of integers (more or less than N^2), 
-*	and/or a non integer character (excluding '+' and/or '-'), the program will halt
-*	and print out an appropriate error message describing the error occurred.
+*	or a non integer character, the program will halt and print out an error message
+*	describing the error occurred.
 *	
 *	Otherwise, if the input is valid, then the new square matrix will be printed out,
-*	along with a message mentioning whether or not the square is a magic square.
+*	along with a message describing whether or not the square is a magic square.
 *	
 *	************* The description of the main algorithm is as follows: **************
 *
 *	Print out a user introduction message to the program;
 *	Scan and set the integers from the input into a square matrix;
-*	if (the input was invalid)
-*		stop the program and print an appropriate error message;
+*	if (the input is invalid at any point)
+*		print an appropriate error message and halt;
 *	else
 *		Print out the new matrix;
-*		Print whether or not it is a valid magic square;
+*		validate whther or not it is a magic Square.
+*		print out the result of the validation.
 *
 *	**********************************************************************************
 *	Written by: Sagi Kimhi
@@ -32,99 +34,82 @@
 
 int main(int argc, char  *argv[])
 {
+	Square magicSquare;
 	printUserIntroMessage();
-	printIfMagic(scanNewMagicSquare());
+	setSquare(magicSquare);		/* This function also halts upon input error. */
+	printSquare(magicSquare);
+	printIfMagic(validateMagicSquare(magicSquare));
 	
 	return 0;
 }
 
-/****************************************************
-*					GET FUNCTIONS:					*
-****************************************************/
-/*	scanNewMagicSquare: Creates, fills and prints a square from an input of integers.
-	returns a MagicSquareFlag upon success, or the FAILURE constant upon failure.
-	an aprropriate message is printed upon failure, describing the reason. */
-uint8_t scanNewMagicSquare(void)
-{
-	Square magicSquare;
-	setSquare(magicSquare);
-	printSquare(magicSquare);
-	return isMagicSquare(magicSquare);
-}
 
 /****************************************************
 *				VALIDATION FUNCTIONS:				*
 ****************************************************/
-/*	isMagicSquare: Validates whther or not a square is a basic magic square.
-	returns 1 if it is, otherwise, toggles the appropriate MagicFlags and returns 0 */
-uint8_t isMagicSquare(Square square)
+/*	validateMagicSquare: Validates whther or not a square is a basic magic square.
+	returns a uint8_t value set with appropriate _BitMagicFlags (see typdef)  */
+uint8_t validateMagicSquare(Square square)
 {
-	uint8_t _magicFlags = 0;
-	_magicFlags |= validMagicMembers(square);
-	_magicFlags |= validMagicSums(square);
+	uint8_t _magicFlags = VALID;
+	_magicFlags |= validMagicMembers(square);	/* turn on bit flags returned by function */
+	_magicFlags |= validMagicSums(square);		/* turn on bit flags returned by function */
 	return _magicFlags;
 }
 
-/*	validMagicMembers: Validates whether or not a pointer to a magicMember hash table
-	points to a table with valid magic members and returns 1 if it does, otherwise, returns 0. */
+/*	validMagicMembers: Validates if a square contains valid magic members.
+	Returns a uint8_t value set with aprropriate _BitMagicFlags (see typdef) */
 uint8_t validMagicMembers(Square square)
 {
-	MemTable table;
-	int member, ind;
-	uint8_t _flags = 0;
-	setMemTable(square, table);
-	for (member = 1; (ind=getKey(member)) !=FAILURE ; member++) {
-		if (table[ind].count == 1)
+	MagicTable magicMemberTable;
+	uint8_t _bitFlags = VALID;
+	int  ind, member;
+
+	setMemTable(square, magicMemberTable); /* Set a member table for the square. */
+	for (member = 1; (ind=getKey(member))!=FAILURE; member++) {
+		if (magicMemberTable[ind].count == 1)
 			continue;
-		_flags |= (!table[ind].count) ? INVALID_MAGIC_MEMBER: MULTI_MEMBER_APPEARANCE;
+		_bitFlags |= (!magicMemberTable[ind].count) ? 	/* set aprropriate bit flags */
+		INVALID_MAGIC_MEMBER: MULTI_MEMBER_APPEARANCE;	/* if (count<1 || count>1) */
 	}
-	return _flags;
+	return _bitFlags;
 }
 
-/*	validMagicSums: returns 1 if the members of the SquareSum struct contain valid magic square
-	sums, otherwise, returns 0. */
+/*	validMagicSums: Checks if the sums of the square's rows, columns and diagonals are all
+	equal to CONSTANT_SUM, and returns a uint8_t value set with aprropriate _BitMagicFlags. */
 uint8_t validMagicSums(Square square)
 {
 	int ind;
 	SquareSums sums;
-	uint8_t _flags = 0;
-	setSquareSums(square, &sums);
+	uint8_t _bitFlags = VALID;
+	setSquareSums(square, &sums);	/* calculate and set the sums in a SquareSums struct */
+	if (!IsConstSum(sums.rightDiagonal) || !IsConstSum(sums.leftDiagonal))
+		_bitFlags |= INVALID_MAGIC_DIAGONAL_SUM;
 	for (ind = 0; ind < N; ind++) {
 		if (!IsConstSum(sums.colSum[ind]) || !IsConstSum(sums.rowSum[ind])) {
-			_flags |= INVALID_MAGIC_LINEAR_SUM;
+			_bitFlags |= INVALID_MAGIC_LINEAR_SUM;
 			break;
 		}
 	}
-	if (!IsConstSum(sums.rightDiagonal) || !IsConstSum(sums.leftDiagonal))
-		_flags |= INVALID_MAGIC_DIAGONAL_SUM;
-	return _flags;
+	return _bitFlags;
 }
 
 /****************************************************
-*				HASH TABLE FUNCTIONS:				*
+*				MAGIC TABLE FUNCTIONS:				*
 ****************************************************/
-/* 	getKey: Returns a key representing an appropriate index to a magicMember in a MemTable
-	with the value of the argument. Returns FAILURE if the value is not a valid magic member value. */
-int getKey(int val)
-{
-	return (ValidMagicMember(val)) ? val-1: FAILURE;
-}
-
-/* 	updateMemTable: Updates the count of the MemTable's members in accordance to the
-	values set in the magicSquare's square's matrix. Returns 1 on success or FAILURE upon failure. 
-	Use the resetMemTable function upfront if the table was not previously reset. */
-void setMemTable(Square square, MemTable table)
+/* 	setMemTable: sets the appropriate count for all of the square's members that
+	count as valid magic members (members with a value between 1...N^2) */
+void setMemTable(Square square, MagicTable table)
 {
 	int row, col;
 	resetMemTable(table);
 	for (row = 0; row < N; row++)
 		for (col = 0; col < N; col++)
-			addToTable(square[row][col], table);
+			addToTable(table, square[row][col]);
 }
 
-/*	resetMemTable: sets the member values of a MemTable to 1...N^2 and their count to 0.
-	No operation occures, and FAILURE is returned for a null MemTable argument. */
-void resetMemTable(MemTable table)
+/*	resetMemTable: initializes a MagicTable with sorted member values of 1...N^2 and counts of 0 */
+void resetMemTable(MagicTable table)
 {
 	int member, ind;
 	for (member = 1; (ind = getKey(member)) != FAILURE; member++) {
@@ -133,11 +118,18 @@ void resetMemTable(MemTable table)
 	}
 }
 
-/*	addToTable: adds a count to the MemTable's aprropriate magicMember and returns it.
-	Returns FAILURE upon failure. */
-void addToTable(int val, MemTable table)
+/*	addToTable: adds one count to a member with the value of "val", if "val" is not a
+	valid magic member's value, no operation is done. */
+void addToTable(MagicTable table, int val)
 {
 	int ind;
 	if ((ind = getKey(val)) != FAILURE)
 		++table[ind].count;
+}
+
+/* 	getKey: Returns an index to a magic member's value in a MagicTable.
+	Returns FAILURE if the value is not a valid magic member's value. */
+int getKey(int val)
+{
+	return (ValidMagicMember(val)) ? val-1: FAILURE;
 }

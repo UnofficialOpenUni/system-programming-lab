@@ -1,13 +1,9 @@
-/*
-*	This source file contains all the user interaction related functions including
-*	handling of output - printing an intro message, a matrix, error messages, etc.
-*	and also some handling of input - the getInt function which converts a set of
-*	characters from the input representing an integer - into an actual integer value.
-*/
 #include "../magic.h"
 
-#define CharToDigit(c) ((c) - '0')
 
+/****************************************************
+*				USER INTERFACE FUNCTIONS:			*
+****************************************************/
 /* printUserIntroMessage: prints a detailed user introduction message to the program. */
 void printUserIntroMessage(void)
 {
@@ -26,14 +22,30 @@ void printUserIntroMessage(void)
 void printSquare(Square square)
 {
 	int row, col;
-	printf("\n");
 	for (row = 0; row < N; row++) {
 		printf("%-5c", '|');
 		for (col = 0; col < N; col++)
 			printf("%-5d", square[row][col]);
 		printf("%-c\n", '|');
 	}
-	printf("\n\n");
+	printf("\n");
+}
+
+/* printInputError: prints an appropriate error message based on the InputFlag argument */
+void printInputError(InputFlag inFlag)
+{
+	switch (inFlag) {
+	case INVALID_INPUT_VALUE:
+		printf("\nError: an incorrect input type was recieved.\nPlease use integers only!\n\n");
+		exit(INVALID_INPUT_VALUE);
+	case VALUE_OVERFLOW:
+		printf("\nError: Too many values were entered.\nPlease enter exactly %d values!\n\n", MAX_MEMBERS);
+		exit(VALUE_OVERFLOW);
+	case VALUE_UNDERFLOW:
+		printf("\nError: You did not provide enough values.\n");
+		printf("Please make sure you are providing exactly %d values!\n\n", MAX_MEMBERS);
+		exit(VALUE_UNDERFLOW);
+	}
 }
 
 /* printIfMagic: prints out a friendly message announcing a magic square */
@@ -54,24 +66,5 @@ void printIfMagic(uint8_t _magicFlag)
 		if (_magicFlag & INVALID_MAGIC_DIAGONAL_SUM)
 			printf("\t# The square has one or more diagonals with an invalid sum.\n \
 		all sums should be equal to: %d.\n", CONSTANT_SUM);
-	}
-}
-
-/* printInputError: prints an appropriate error message based on the InputFlag argument */
-void printInputError(InputFlag inFlag)
-{
-	switch (inFlag) {
-	case INVALID_INPUT_VALUE:
-		printf("\nError: an incorrect input type was recieved.\nPlease use integers only!\n\n");
-		break;
-	case VALUE_OVERFLOW:
-		printf("\nError: Too many values were entered.\nPlease enter exactly %d values!\n\n", MAX_MEMBERS);
-		break;
-	case VALUE_UNDERFLOW:
-		printf("\nError: You did not provide enough values.\n");
-		printf("Please make sure you are providing exactly %d values!\n\n", MAX_MEMBERS);
-		break;
-	default:
-		break;
 	}
 }

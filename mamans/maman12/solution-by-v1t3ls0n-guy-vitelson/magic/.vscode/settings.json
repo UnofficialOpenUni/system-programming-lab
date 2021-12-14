@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "Enabled",
+    "editor.insertSpaces": false,
+    "editor.fontSize": 12,
+    "workbench.colorTheme": "Syntax Material Dark",
+    "files.associations": {
+        "stdio.h": "c",
+        "*.tcc": "cpp"
+    }
+}
