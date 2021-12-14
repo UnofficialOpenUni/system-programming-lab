@@ -10,7 +10,7 @@ Bool isBasicMagicBox(int matrix[N][N])
     if (xSum == ySum)
     {
       if (i > 0 && xSum != MAX_SUM)
-        return False;
+        return printFailureReason(notEqualToMagicSum);
 
       else if (i == 0)
         rtlCrossSum += matrix[N - 1][N - 1];
@@ -35,25 +35,52 @@ Bool isBasicMagicBox(int matrix[N][N])
   }
 
   if (ltrCrossSum != rtlCrossSum || rtlCrossSum != MAX_SUM)
-    return False;
+    return printFailureReason(notEqualToMagicSum);
 
   return True;
 }
 
 Bool verify(int c)
 {
-  if (c < 1 || c > SIZE || c >= MAX_SUM)
-    return False;
+  if (c < 1 || c > SIZE)
+    return printFailureReason(numberOutOfRange);
+  else if (c >= MAX_SUM)
+    return printFailureReason(biggerThanMagicSum);
 
-  return checkForDuplicateValues(c);
+  return checkForDuplicates(c);
 }
 
-Bool checkForDuplicateValues(int c)
+Bool checkForDuplicates(int c)
 {
   static int valuesTable[MAX_SUM] = {0};
   valuesTable[c]++;
   if (valuesTable[c] > 1)
-    return False;
+    return printFailureReason(duplicateNumber);
   else
     return True;
+}
+
+Bool printFailureReason(Failure err)
+{
+  switch (err)
+  {
+  case numberOutOfRange:
+    printf("\nValue of single number crossed accepted range, which is between %d - %d, ", N, SIZE);
+    break;
+  case duplicateNumber:
+    printf("\nDuplicate number value was found, ");
+    break;
+  case biggerThanMagicSum:
+    printf("\nSingle number was found to be bigger than the expected sum, ");
+    break;
+
+  case notEqualToMagicSum:
+    printf("\nCalculated sum was found not equal to expected magic sum, ");
+    break;
+
+  default:
+    break;
+  }
+  printf("Therefore, ");
+  return False;
 }

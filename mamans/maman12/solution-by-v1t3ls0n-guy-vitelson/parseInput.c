@@ -1,56 +1,32 @@
 #include "data.h"
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
-#include <stdlib.h>
 
 int parseInput(int matrix[N][N])
 {
-  int i = 0, j = 0, k = 0;
-  int c = 0, numericValue = 0;
-  Bool isParsing = False;
-  char *num;
-  num = (char *)calloc(8, sizeof(int));
-  while ((c = getchar()) != EOF)
+  int i = 0, j = 0, num;
+  char c;
+  while (scanf("%d%c", &num, &c) >= 1)
   {
-    if (j + 1 > SIZE)
+
+    if (j > SIZE - 1)
       return handleInputError(tooManyNumbers);
-
-    if (isdigit(c) || (!isParsing && c == '-'))
-    {
-      if (!isParsing)
-        isParsing = True;
-
-      num[k] = c;
-      k++;
-    }
-
-    else if (isspace(c) && isParsing)
-    {
-      numericValue = atoi(num);
-      memset(num, 0, k);
-      if (j > 0 && j % N == 0)
-        i++;
-      matrix[i][j % N] = numericValue;
-      j++;
-
-      isParsing = False;
-      c = k = numericValue = 0;
-    }
-
     else if (c == '.')
       return handleInputError(notAnInteger);
-    else if (!isspace(c) && !isdigit(c))
+    else if (!isspace(c))
       return handleInputError(generalInputError);
+
+    else
+    {
+      if (j > 0 && j % N == 0)
+        i++;
+      matrix[i][j % N] = num;
+      j++;
+    }
   }
 
-  if (c == EOF && isParsing == True && j == SIZE - 1)
-  {
-    numericValue = atoi(num);
-    free(num);
-    matrix[i][j % N] = numericValue;
-    j++;
-  }
+  if (!isspace(c) || (!isdigit(num) && !isspace(num)))
+    return handleInputError(generalInputError);
 
   return j < SIZE ? handleInputError(notEnoughNumbers) : True;
 }

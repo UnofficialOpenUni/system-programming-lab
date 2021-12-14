@@ -11,6 +11,6 @@ void magic()
   if (parseInput(matrix))
   {
     printMatrix(matrix);
-    isBasicMagicBox(matrix) ? printf("\nYes it is a Simple Magic Box! :)") : printf("\nNo... it is NOT! a Simple Magic Box:(");
+    isBasicMagicBox(matrix) ? printf("\nYES! it is a Simple Magic Box! :)") : printf("\nit is NOT! a Basic Magic Box :(");
   }
 }
