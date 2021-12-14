@@ -1,0 +1,3 @@
+
+### Input Error! ###
+You did not inserted enough numbers!
