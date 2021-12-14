@@ -14,7 +14,7 @@ typedef enum
   generalInputError = -4,
   tooManyNumbers = -5,
   notEnoughNumbers = -6,
-  notAnInteger = -7,
+  notAnInteger = -7
 
 } Error;
 
