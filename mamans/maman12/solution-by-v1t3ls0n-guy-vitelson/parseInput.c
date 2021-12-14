@@ -1,21 +1,23 @@
 #include "data.h"
+#include <limits.h>
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int parseInput(int matrix[N][N])
 {
   int i = 0, j = 0, num;
   char c;
-  while (scanf("%d%c", &num, &c) >= 1)
-  {
+  char *str = NULL;
+  str = (char *)calloc(SIZE, sizeof(int));
 
-    if (j > SIZE - 1)
-      return handleInputError(tooManyNumbers);
-    else if (c == '.')
+  while (scanf("%d%c", &num, &c) > 0)
+  {
+    if (c == '.')
       return handleInputError(notAnInteger);
     else if (!isspace(c))
       return handleInputError(generalInputError);
-
     else
     {
       if (j > 0 && j % N == 0)
@@ -25,8 +27,14 @@ int parseInput(int matrix[N][N])
     }
   }
 
-  if (!isspace(c) || (!isdigit(num) && !isspace(num)))
+  scanf("%s", str);
+  if (strlen(str) > 0)
     return handleInputError(generalInputError);
 
-  return j < SIZE ? handleInputError(notEnoughNumbers) : True;
+  if (j > SIZE)
+    return handleInputError(tooManyNumbers);
+  else if (j < SIZE)
+    return handleInputError(notEnoughNumbers);
+
+  return True;
 }
