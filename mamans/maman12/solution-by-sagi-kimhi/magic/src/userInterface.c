@@ -21,12 +21,25 @@ void printUserIntroMessage(void)
 /* printSquare: prints a pretty Square representation */
 void printSquare(Square square)
 {
-	int row, col;
+	/* find the longest variable in the matrix */
+	int row, col, minTemp, maxTemp;
+	uint8_t longestVar=1, longestPosVar = 1, longestNegVar = 2;
+	for (row=minTemp=maxTemp=0; row<N; row++)
+		for (col=0; col<N; col++) {
+			maxTemp = (square[row][col] > maxTemp) ? square[row][col]: maxTemp;
+			minTemp = (square[row][col] < minTemp) ? square[row][col]: minTemp;
+		}
+	for (; (maxTemp/=10); longestPosVar++);
+	for (; (minTemp/=10); longestNegVar++);
+	longestVar = (longestPosVar > longestNegVar) ? longestPosVar: longestNegVar;
+
+	/* print the matrix with dynamic spacing based on the size of the longest variable */
+	printf("\n\n");
 	for (row = 0; row < N; row++) {
-		printf("%-5c", '|');
+		printf("%-*c", longestVar, '|');
 		for (col = 0; col < N; col++)
-			printf("%-5d", square[row][col]);
-		printf("%-c\n", '|');
+			printf("%-*d %-*c", longestVar, square[row][col], longestVar, '|');
+		printf("\n\n");
 	}
 	printf("\n");
 }

@@ -26,8 +26,7 @@
 *		print out the result of the validation.
 *
 *	**********************************************************************************
-*	Written by: Sagi Kimhi
-*	Date: 27/11/21
+*	Written by: Sagi Kimhi - 206504227
 */
 #include "../magic.h"
 
@@ -36,9 +35,9 @@ int main(int argc, char  *argv[])
 {
 	Square magicSquare;
 	printUserIntroMessage();
-	setSquare(magicSquare);		/* This function also halts upon input error. */
+	setSquare(magicSquare);			/* This function also halts upon input error. */
 	printSquare(magicSquare);
-	printIfMagic(validateMagicSquare(magicSquare));
+	validateMagicSquare(magicSquare);
 	
 	return 0;
 }
@@ -52,41 +51,33 @@ int main(int argc, char  *argv[])
 uint8_t validateMagicSquare(Square square)
 {
 	uint8_t _magicFlags = VALID;
-	_magicFlags |= validMagicMembers(square);	/* turn on bit flags returned by function */
-	_magicFlags |= validMagicSums(square);		/* turn on bit flags returned by function */
+	_magicFlags |= validateMagicMembers(square);	/* turn on bit flags returned by function */
+	_magicFlags |= validateMagicSums(square);		/* turn on bit flags returned by function */
+	printIfMagic(_magicFlags);
+
 	return _magicFlags;
 }
 
-/*	validMagicMembers: Validates if a square contains valid magic members.
+/*	validateMagicMembers: Validates if a square contains valid magic members.
 	Returns a uint8_t value set with aprropriate _BitMagicFlags (see typdef) */
-uint8_t validMagicMembers(Square square)
+uint8_t validateMagicMembers(Square square)
 {
 	MagicTable magicMemberTable;
-	uint8_t _bitFlags = VALID;
-	int  ind, member;
-
-	setMemTable(square, magicMemberTable); /* Set a member table for the square. */
-	for (member = 1; (ind=getKey(member))!=FAILURE; member++) {
-		if (magicMemberTable[ind].count == 1)
-			continue;
-		_bitFlags |= (!magicMemberTable[ind].count) ? 	/* set aprropriate bit flags */
-		INVALID_MAGIC_MEMBER: MULTI_MEMBER_APPEARANCE;	/* if (count<1 || count>1) */
-	}
-	return _bitFlags;
+	return setMemTable(square, magicMemberTable);
 }
 
-/*	validMagicSums: Checks if the sums of the square's rows, columns and diagonals are all
+/*	validateMagicSums: Checks if the sums of the square's rows, columns and diagonals are all
 	equal to CONSTANT_SUM, and returns a uint8_t value set with aprropriate _BitMagicFlags. */
-uint8_t validMagicSums(Square square)
+uint8_t validateMagicSums(Square square)
 {
 	int ind;
 	SquareSums sums;
 	uint8_t _bitFlags = VALID;
 	setSquareSums(square, &sums);	/* calculate and set the sums in a SquareSums struct */
-	if (!IsConstSum(sums.rightDiagonal) || !IsConstSum(sums.leftDiagonal))
+	if (!ValidMagicSum(sums.rightDiagonal) || !ValidMagicSum(sums.leftDiagonal))
 		_bitFlags |= INVALID_MAGIC_DIAGONAL_SUM;
 	for (ind = 0; ind < N; ind++) {
-		if (!IsConstSum(sums.colSum[ind]) || !IsConstSum(sums.rowSum[ind])) {
+		if (!ValidMagicSum(sums.colSum[ind]) || !ValidMagicSum(sums.rowSum[ind])) {
 			_bitFlags |= INVALID_MAGIC_LINEAR_SUM;
 			break;
 		}
@@ -97,15 +88,19 @@ uint8_t validMagicSums(Square square)
 /****************************************************
 *				MAGIC TABLE FUNCTIONS:				*
 ****************************************************/
-/* 	setMemTable: sets the appropriate count for all of the square's members that
-	count as valid magic members (members with a value between 1...N^2) */
-void setMemTable(Square square, MagicTable table)
+/* 	setMemTable: sets appropriate count for all of the square's members that
+	count as valid magic members (members with a value between 1...N^2).
+	Returns _BitMagicFlags set with flags appropriate to the encountered square members */
+uint8_t setMemTable(Square square, MagicTable table)
 {
-	int row, col;
+	int row, col, temp;
+	uint8_t _bitFlags = VALID;
 	resetMemTable(table);
 	for (row = 0; row < N; row++)
 		for (col = 0; col < N; col++)
-			addToTable(table, square[row][col]);
+			if ((temp = addToTable(table, square[row][col])) != 1)
+				_bitFlags |= (temp) ? MULTI_MEMBER_APPEARANCE: INVALID_MAGIC_MEMBER;
+	return _bitFlags;
 }
 
 /*	resetMemTable: initializes a MagicTable with sorted member values of 1...N^2 and counts of 0 */
@@ -120,11 +115,12 @@ void resetMemTable(MagicTable table)
 
 /*	addToTable: adds one count to a member with the value of "val", if "val" is not a
 	valid magic member's value, no operation is done. */
-void addToTable(MagicTable table, int val)
+int addToTable(MagicTable table, int val)
 {
 	int ind;
 	if ((ind = getKey(val)) != FAILURE)
-		++table[ind].count;
+		return ++table[ind].count;
+	return 0;
 }
 
 /* 	getKey: Returns an index to a magic member's value in a MagicTable.

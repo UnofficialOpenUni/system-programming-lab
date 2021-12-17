@@ -8,20 +8,24 @@
 	in left to right order, returns 1 on success, or prints an error and halts on failure. */
 int setSquare(Square square)
 {
-	int row, col, count;
+	unsigned int row, col, count;
 	row=col=count=0; 
 	while (scanf("%d", &square[row][col]) == 1) { 
 		if (++count > MAX_MEMBERS) 
 				printInputError(VALUE_OVERFLOW);
-		if (++col < N)
-			continue;
-		col = 0;
-		++row;
+		if (feof(stdin)) {
+			if (count < MAX_MEMBERS)
+				printInputError(VALUE_UNDERFLOW);
+			return 1;
+		}
+		if (++col >= N) {
+			col = 0;
+			++row;
+		}
 	}
-
 	if (!feof(stdin))
 		printInputError(INVALID_INPUT_VALUE);
-	else if (count != MAX_MEMBERS)
+	if (count != MAX_MEMBERS)
 		printInputError(VALUE_UNDERFLOW);
 	return 1;
 }
