@@ -62,7 +62,6 @@ int main()
     return 0;
 }
 
-
 /* @ Function: getTextAndAnalyzeFully
    @ Arguments: the function get not arguments.
    @ Desctiption: The function start listening to input from user and evaluates brackets in each line of text user entered 
@@ -187,9 +186,8 @@ void getTextAndAnalyzeFully()
         prevChar = c;
     }
 
-    evalTextGlobally(globalResult, brackets, prevChar, lonelyCloseBracetsCount, lonelyOpenBracetsCount);
+    evalTextGlobally(globalResult, brackets, brackets[(strlen(brackets) - 1)], lonelyCloseBracetsCount, lonelyOpenBracetsCount);
 }
-
 
 /* @ Function: evalTextGlobally
    @ Arguments: The first argument needs to represent the global result value we currently have while we still inside
@@ -394,7 +392,6 @@ Bool evalSingleLine(char brackets[MAX_LINE_LENGTH], int length)
     return result;
 }
 
-
 /* @ Function: evalBracketSequence
    @ Arguments: The function gets 3 argument, first is an array of open brackets characters, the second is an array of closed brackets
    characters, the third argument is the length of both arrays, the arrays suppose to have the same length.
@@ -427,7 +424,6 @@ Bool evalBracketSequence(char opening[MAX_LINE_LENGTH / 2], char closing[MAX_LIN
     }
     return result;
 }
-
 
 /* @ Function: areBracketsOfSameTypeButInverse
    @ Arguments: the function gets 2 integer arguments, each of them suppose to hold ascii value of a character, the first one 
