@@ -8,7 +8,7 @@ The purpose of this repository is to provide students of the Open University a c
 </br>
 <div align="center">
 	<h2> Join our Social Media groups: </h2></br>
-	<a href="https://discord.gg/SfHGVJ5s">
+	<a href="https://discord.com/invite/jsWnZpsEFP">
 	<img src="https://discord.com/assets/cb48d2a8d4991281d7a6a95d2f58195e.svg" alt="Discord" height="80px" />
 	</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<a href="https://chat.whatsapp.com/FxptbDk4kgBJOleFaRTCHe">
@@ -19,7 +19,7 @@ The purpose of this repository is to provide students of the Open University a c
 ## Becoming a contributer:
 Becoming a contributer will give you access to review and approve pull requests on the upstream repository, as well as pushing, merging and performing various different actions directly to the upstream repository wihtout needing to fork it and keeping your fork up to date.
 
-If you are not new to Github and are certain in what you're doing and that you won't delete/modify other people's work by mistake, you are more than welcome to request becoming a contributer on `#request-git-access` on [our Discord 😃](https://discord.gg/SfHGVJ5s) </br>
+If you are not new to Github and are certain in what you're doing and that you won't delete/modify other people's work by mistake, you are more than welcome to request becoming a contributer on `#request-git-access` on [our Discord 😃](https://discord.com/invite/jsWnZpsEFP) </br>
 We'd be more than happy to increase the amounts of contributors to this git repo as well as the amount of content uploaded for the benefit of all the students of this course.
 
 ## How to get started using this repo:
